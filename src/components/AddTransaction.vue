@@ -4,7 +4,7 @@
   </h3>
 
   <!-- Buttons for selecting Pemasukan or Pengeluaran -->
-  <div class="text-base">
+  <div :class="[textColor, 'text-base']">
     <label for="transaction-type">Pilih jenis transaksi</label>
     <div id="transaction-type" class="flex gap-2 justify-start">
       <button
@@ -35,7 +35,7 @@
   </div>
 
   <form id="form" @submit.prevent="onSubmit">
-    <div class="form-control text-base">
+    <div :class="[textColor, 'text-base form-control ']">
       <label for="text">Nama Transaksi</label>
       <input
         type="text"
@@ -45,7 +45,7 @@
         class="border border-gray-300 px-3 py-2 rounded-lg"
       />
     </div>
-    <div class="form-control text-base">
+    <div :class="[textColor, 'text-base form-control ']">
       <label for="amount">Jumlah Transaksi</label>
       <input
         type="text"
@@ -58,7 +58,7 @@
       />
     </div>
     <!-- New Date Input Field -->
-    <div class="form-control text-base">
+    <!-- <div :class="[textColor, 'text-base form-control ']">
       <label for="date" class="mr-4">Tanggal Transaksi </label>
       <input
         type="date"
@@ -67,7 +67,7 @@
         :disabled="!transactionType"
         class="border border-gray-300 rounded-md"
       />
-    </div>
+    </div> -->
     <div class="flex justify-end">
       <button
         class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition mt-4"

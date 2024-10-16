@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 :class="textColor" class="text-xl font-semibold mb-8">
+    <h2 :class="computedTextColor" class="text-xl font-semibold mb-8">
       Grafik Transaksi
     </h2>
     <Line :data="chartData" :options="chartOptions" />
@@ -58,9 +58,9 @@ const chartData = computed(() => {
         label: "Jumlah Transaksi (Rp)",
         data,
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
+        borderColor: isDarkMode.value ? "rgb(53, 162, 235)" : "rgb(75, 192, 192)",
         tension: 0.1,
-        pointBackgroundColor: "rgb(75, 192, 192)",
+        pointBackgroundColor: isDarkMode.value ? "rgb(53, 162, 235)" : "rgb(75, 192, 192)",
         pointRadius: 5,
         pointHoverRadius: 8,
       },
@@ -72,6 +72,11 @@ const chartData = computed(() => {
 const isDarkMode = computed(() =>
   document.documentElement.classList.contains("dark")
 );
+
+// Compute the text color based on the dark mode state
+const computedTextColor = computed(() => {
+  return isDarkMode.value ? "text-white" : props.textColor;
+});
 
 // Chart options with dark and light mode support
 const chartOptions = computed(() => ({
@@ -119,5 +124,6 @@ const chartOptions = computed(() => ({
 <style scoped>
 canvas {
   max-width: 100%;
+  background-color: transparent; /* Ensures the background is transparent */
 }
 </style>

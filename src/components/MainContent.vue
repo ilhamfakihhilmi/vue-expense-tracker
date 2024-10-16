@@ -8,84 +8,100 @@
         Toggle Theme
       </button>
     </div>
+
     <div
       :class="{
         'bg-white': !isDarkMode,
         'bg-gray-900': isDarkMode,
       }"
-      class="grid grid-cols-3 gap-4 p-4 transition-colors duration-300 h-full"
+      class="grid grid-cols-2 p-4 transition-colors duration-300 h-full"
     >
       <div
         :class="{
-          'bg-white border-gray-200': !isDarkMode,
-          'bg-gray-700 border-gray-700': isDarkMode,
+          'bg-white': !isDarkMode,
+          'bg-gray-900': isDarkMode,
         }"
-        class="p-8 shadow-xl border rounded-md h-full"
+        class="grid grid-cols-2 gap-4 transition-colors duration-300 h-full"
       >
-        <Header :textColor="textColor" />
-        <Balance :textColor="textColor" :total="total" />
+        <div
+          :class="{
+            'bg-white border-gray-200': !isDarkMode,
+            'bg-gray-700 border-gray-700': isDarkMode,
+          }"
+          class="p-8 shadow-xl border rounded-md h-full"
+        >
+          <Header :textColor="textColor" />
+          <Balance :textColor="textColor" :total="total" />
+          <IncomeExpenses
+            :income="income"
+            :expenses="expenses"
+            :textColor="textColor"
+          />
+        </div>
+        <div
+          :class="{
+            'bg-white border-gray-200': !isDarkMode,
+            'bg-gray-700 border-gray-700': isDarkMode,
+          }"
+          class="p-4 shadow-xl border rounded-md h-full"
+        >
+          <LineChart
+            :transactions="sortedTransactions"
+            :textColor="textColor"
+          />
+        </div>
+        <div
+          :class="{
+            'bg-white border-gray-200': !isDarkMode,
+            'bg-gray-700 border-gray-700': isDarkMode,
+          }"
+          class="p-4 shadow-xl border rounded-md h-full"
+        >
+          <LineChartBalance
+            :transactions="sortedTransactions"
+            :textColor="textColor"
+          />
+        </div>
+        <div
+          :class="{
+            'bg-white border-gray-200': !isDarkMode,
+            'bg-gray-700 border-gray-700': isDarkMode,
+          }"
+          class="p-4 shadow-xl border rounded-md h-full"
+        >
+          <AddTransaction
+            @transactionSubmitted="handleTransactionSubmitted"
+            :textColor="textColor"
+          />
+        </div>
       </div>
       <div
         :class="{
-          'bg-white border-gray-200': !isDarkMode,
-          'bg-gray-700 border-gray-700': isDarkMode,
+          'bg-white': !isDarkMode,
+          'bg-gray-900': isDarkMode,
         }"
-        class="p-4 shadow-xl border rounded-md h-full"
+        class="grid grid-cols-1 gap-4 pl-4 transition-colors duration-300 h-full"
       >
-        <IncomeExpenses
-          :income="income"
-          :expenses="expenses"
-          :textColor="textColor"
-        />
-      </div>
-      <div
-        :class="{
-          'bg-white border-gray-200': !isDarkMode,
-          'bg-gray-700 border-gray-700': isDarkMode,
-        }"
-        class="p-4 shadow-xl border rounded-md h-full"
-      ></div>
-      <div
-        :class="{
-          'bg-white border-gray-200': !isDarkMode,
-          'bg-gray-700 border-gray-700': isDarkMode,
-        }"
-        class="p-4 shadow-xl border rounded-md h-full"
-      >
-        <LineChart :transactions="sortedTransactions" :textColor="textColor" />
-      </div>
-
-      <div
-        :class="{
-          'bg-white border-gray-200': !isDarkMode,
-          'bg-gray-700 border-gray-700': isDarkMode,
-        }"
-        class="p-4 shadow-xl border rounded-md text-base font-normal h-full"
-      >
-        <TransactionList
-          :transactions="transactions"
-          @transactionDeleted="handleTransactionDeleted"
-          :textColor="textColor"
-        />
-        <button
+        <div
+          :class="{
+            'bg-white border-gray-200': !isDarkMode,
+            'bg-gray-700 border-gray-700': isDarkMode,
+          }"
+          class="p-4 shadow-xl border rounded-md text-base font-normal h-full"
+        >
+          <TransactionList
+            :transactions="transactions"
+            @transactionDeleted="handleTransactionDeleted"
+            :textColor="textColor"
+          />
+          <!-- <button
           v-if="hasTransactions"
           class="bg-red-400 border rounded-md p-2"
           @click="deleteAllTransactions"
         >
           <span class="icon">🗑️</span> Hapus Semua Transaksi
-        </button>
-      </div>
-      <div
-        :class="{
-          'bg-white border-gray-200': !isDarkMode,
-          'bg-gray-700 border-gray-700': isDarkMode,
-        }"
-        class="p-4 shadow-xl border rounded-md h-full"
-      >
-        <AddTransaction
-          @transactionSubmitted="handleTransactionSubmitted"
-          :textColor="textColor"
-        />
+        </button> -->
+        </div>
       </div>
     </div>
   </main>
@@ -102,6 +118,7 @@ import IncomeExpenses from "./IncomeExpenses.vue";
 import TransactionList from "./TransactionList.vue";
 import AddTransaction from "./AddTransaction.vue";
 import LineChart from "./LineChart.vue";
+import LineChartBalance from "./LineChartBalance.vue";
 
 // Import composable for transaction logic
 import { useTransactions } from "../composables/useTransactions";
@@ -130,7 +147,7 @@ const handleTransactionDeleted = (id) => {
 
 // Computed property for sorted transactions
 const sortedTransactions = computed(() => {
-  return transactions.value; // Sementara, kembalikan semua transaksi
+  return transactions.value; // Ensure that transactions have 'date' and 'amount'
 });
 
 // Theme management
@@ -147,7 +164,7 @@ const themeClass = computed(() =>
 
 // Computed property for text color based on theme
 const textColor = computed(() =>
-  isDarkMode.value ? "text-white " : "text-black"
+  isDarkMode.value ? "text-white" : "text-black"
 );
 </script>
 

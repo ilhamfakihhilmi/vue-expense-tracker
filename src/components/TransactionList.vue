@@ -1,6 +1,6 @@
 <template>
   <main>
-    <h3 :class="[textColor, 'text-sm font-semibold']">Riwayat</h3>
+    <!-- <h3 :class="[textColor, 'text-sm font-semibold']">Riwayat</h3> -->
 
     <!-- Filter and Sort Controls -->
     <div class="filter-sort-controls">
@@ -43,9 +43,9 @@
 
     <!-- Pagination Controls -->
     <div class="pagination">
-      <button @click="currentPage--" :disabled="currentPage === 1">Prev</button>
-      <span>{{ currentPage }} / {{ totalPages }}</span>
-      <button @click="currentPage++" :disabled="currentPage === totalPages">
+      <button @click="currentPage--" :disabled="currentPage === 1" :class="[textColor, 'text-base form-control ']">Prev</button>
+      <span :class="[textColor, 'text-base form-control ']">{{ currentPage }} / {{ totalPages }}</span>
+      <button @click="currentPage++" :disabled="currentPage === totalPages" :class="[textColor, 'text-base form-control ']">
         Next
       </button>
     </div>
@@ -71,7 +71,7 @@ const props = defineProps({
 const searchQuery = ref("");
 const sortOption = ref("amount-asc");
 const currentPage = ref(1);
-const itemsPerPage = 3; // Change this to set how many items you want per page
+const itemsPerPage = 10; // Change this to set how many items you want per page
 
 // Function to validate if the date is valid
 const isValidDate = (date) => {

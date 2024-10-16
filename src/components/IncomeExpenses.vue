@@ -1,7 +1,7 @@
 <template>
   <main
     :class="textColor"
-    class="flex gap-10 justify-center items-center w-full h-full"
+    class="flex gap-10  items-start w-full h-full"
   >
     <div>
       <h4 class="font-normal">Pemasukan</h4>
