@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3 class="text-slate-800 text-sm font-semibold">Riwayat</h3>
+  <main>
+    <h3 :class="[textColor, 'text-sm font-semibold']">Riwayat</h3>
 
     <!-- Filter and Sort Controls -->
     <div class="filter-sort-controls">
@@ -18,9 +18,11 @@
       </select>
     </div>
 
+    <!-- Chart displaying transaction amounts over time -->
+
     <ul id="list" class="list">
       <li
-        v-for="transaction in sortedTransactions"
+        v-for="transaction in paginatedTransactions"
         :key="transaction.id"
         :class="transaction.amount < 0 ? 'minus' : 'plus'"
       >
@@ -38,7 +40,16 @@
         </button>
       </li>
     </ul>
-  </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      <button @click="currentPage--" :disabled="currentPage === 1">Prev</button>
+      <span>{{ currentPage }} / {{ totalPages }}</span>
+      <button @click="currentPage++" :disabled="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </main>
 </template>
 
 <script setup>
@@ -50,11 +61,17 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  textColor: {
+    type: String,
+    required: true,
+  },
 });
 
-// State for search query and sort option
-const searchQuery = ref('');
-const sortOption = ref('amount-asc');
+// State for search query, sort option, and pagination
+const searchQuery = ref("");
+const sortOption = ref("amount-asc");
+const currentPage = ref(1);
+const itemsPerPage = 3; // Change this to set how many items you want per page
 
 // Function to validate if the date is valid
 const isValidDate = (date) => {
@@ -87,7 +104,7 @@ const deleteTransaction = (id) => {
   }
 };
 
-// Computed property to sort transactions
+// Computed property to filter and sort transactions
 const sortedTransactions = computed(() => {
   let filteredTransactions = props.transactions.filter((transaction) =>
     transaction.text.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -105,6 +122,16 @@ const sortedTransactions = computed(() => {
   }
 
   return filteredTransactions;
+});
+
+// Computed property to handle pagination
+const totalPages = computed(() => {
+  return Math.ceil(sortedTransactions.value.length / itemsPerPage);
+});
+
+const paginatedTransactions = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  return sortedTransactions.value.slice(start, start + itemsPerPage);
 });
 </script>
 
@@ -152,5 +179,21 @@ const sortedTransactions = computed(() => {
 .sort-select {
   padding: 5px;
   width: 35%;
+}
+
+/* Styles for pagination controls */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+
+.pagination span {
+  align-self: center;
 }
 </style>

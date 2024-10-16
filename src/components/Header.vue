@@ -1,3 +1,14 @@
 <template>
-  <h2 class="text-slate-700 text-base font-medium">Saldo anda saat ini</h2>
+  <header :class="textColor">
+    <h1 class="text-2xl font-bold">Transaction Tracker</h1>
+  </header>
 </template>
+
+<script setup>
+const props = defineProps({
+  textColor: {
+    type: String,
+    required: true,
+  },
+});
+</script>

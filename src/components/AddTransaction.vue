@@ -1,10 +1,10 @@
 <template>
-  <h3 class="text-slate-700 text-base font-semibold">
+  <h3 :class="[textColor, 'text-base font-semibold']">
     Tambahkan Transaksi anda
   </h3>
 
   <!-- Buttons for selecting Pemasukan or Pengeluaran -->
-  <div class="text-base ">
+  <div class="text-base">
     <label for="transaction-type">Pilih jenis transaksi</label>
     <div id="transaction-type" class="flex gap-2 justify-start">
       <button
@@ -93,6 +93,13 @@ const emit = defineEmits(["transactionSubmitted"]);
 
 onMounted(() => {
   date.value = new Date().toISOString().slice(0, 10);
+});
+
+const props = defineProps({
+  textColor: {
+    type: String,
+    required: true,
+  },
 });
 
 const setIncome = () => {
