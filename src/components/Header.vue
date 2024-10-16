@@ -1,3 +1,3 @@
 <template>
-  <h2 style="display: flex; justify-content: center;">Expense Tracker</h2>
+  <h2 class="text-slate-700 text-base font-medium">Saldo anda saat ini</h2>
 </template>

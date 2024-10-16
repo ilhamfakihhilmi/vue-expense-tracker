@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>History</h3>
+    <h3 class="text-slate-800 text-sm font-semibold">Riwayat</h3>
 
     <!-- Filter and Sort Controls -->
     <div class="filter-sort-controls">

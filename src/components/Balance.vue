@@ -1,19 +1,18 @@
 <template>
-  <div class="balance">
-    <h3>Total Balance</h3>
+  <div class="text-slate-700 text-4xl font-bold mt-3">
     <h1>Rp.{{ formattedTotal }}</h1>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed } from "vue";
 
 const props = defineProps({
   total: Number,
 });
 
 const formattedTotal = computed(() => {
-  return props.total.toLocaleString('id-ID'); // Format sesuai dengan IDR (Indonesia)
+  return props.total.toLocaleString("id-ID"); // Format sesuai dengan IDR (Indonesia)
 });
 </script>
 

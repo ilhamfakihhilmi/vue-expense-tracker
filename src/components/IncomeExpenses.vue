@@ -1,18 +1,22 @@
 <template>
-  <div class="inc-exp-container">
+  <div class="flex gap-10 justify-center items-center w-full h-full">
     <div>
-      <h4>Pemasukan</h4>
-      <p class="money plus">Rp.{{ formattedIncome }}</p>
+      <h4 class="text-slate-700 font-normal">Pemasukan</h4>
+      <p class="text-2xl text-green-500 font-medium mt-2">
+        Rp.{{ formattedIncome }}
+      </p>
     </div>
     <div>
-      <h4>Pengeluaran</h4>
-      <p class="money minus">Rp.{{ formattedExpenses }}</p>
+      <h4 class="text-slate-700 font-normal">Pengeluaran</h4>
+      <p class="text-2xl text-red-500 font-medium mt-2">
+        Rp.{{ formattedExpenses }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed } from "vue";
 
 const props = defineProps({
   income: Number,
@@ -21,13 +25,12 @@ const props = defineProps({
 
 // Format income with thousand separators
 const formattedIncome = computed(() => {
- 
-   return Math.abs(props.income).toLocaleString('id-ID')// Format dengan pemisah ribuan
+  return Math.abs(props.income).toLocaleString("id-ID"); // Format dengan pemisah ribuan
 });
 
 // Format expenses without the negative sign
 const formattedExpenses = computed(() => {
-  return Math.abs(props.expenses).toLocaleString('id-ID'); // Ambil nilai absolut dan format
+  return Math.abs(props.expenses).toLocaleString("id-ID"); // Ambil nilai absolut dan format
 });
 </script>
 
