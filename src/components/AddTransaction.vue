@@ -29,7 +29,7 @@
         class="px-5 py-1 rounded-md transition font-normal text-base"
         @click="setExpense"
       >
-        Pengeluaran
+        Pengeluaran 
       </button>
     </div>
   </div>

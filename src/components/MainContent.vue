@@ -1,5 +1,5 @@
 <template>
-  <main :class="['w-full h-screen p-4', themeClass]">
+  <main :class="['w-full h-screen p-4 ', themeClass]">
     <toggle class="flex justify-end">
       <button
         @click="toggleTheme"
@@ -15,7 +15,7 @@
         'bg-white': !isDarkMode,
         'bg-gray-900': isDarkMode,
       }"
-      class="grid grid-cols-[3fr_1fr] h-full w-full box-border overflow-hidden"
+      class="grid grid-cols-[3fr_1fr] h-full w-full box-border"
     >
       <div
         :class="{
@@ -24,25 +24,25 @@
         }"
         class="grid grid-cols-2 gap-4 h-full box-border"
       >
-        <div class="grid grid-rows-2 gap-4">
+        <div class="grid grid-rows-2 gap-1 h-full">
           <layouta
             :class="{
-              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md h-full box-border p-10':
+              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md h-full box-border p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border p-10':
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative"
           >
             <div
-              class="absolute top-4 right-4 bg-slate-100 w-12 h-12 rounded-full flex items-center justify-center"
+              class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                class="w-6 h-6 text-gray-600"
+                class="w-4 h-4 text-gray-600"
               >
                 <path
                   stroke-linecap="round"
@@ -59,22 +59,22 @@
 
           <layoutb
             :class="{
-              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full box-border':
+              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full box-border p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border':
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative"
           >
             <div
-              class="absolute top-4 right-4 bg-slate-100 w-12 h-12 rounded-full flex items-center justify-center"
+              class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                class="w-6 h-6 text-gray-600"
+                class="w-4 h-4 text-gray-600"
               >
                 <path
                   stroke-linecap="round"
@@ -93,6 +93,7 @@
             />
           </layoutb>
         </div>
+
         <div
           :class="{
             'bg-white border-gray-200': !isDarkMode,

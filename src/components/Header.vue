@@ -1,6 +1,7 @@
 <template>
-  <header :class="textColor">
-    <h1 class="text-2xl font-semibold text-white">Saldo Anda</h1>
+  <header :class="textColor" class="flex items-center">
+    
+    <h1 class="text-2xl font-semibold text-white">💳 Saldo Anda</h1>
   </header>
 </template>
 
