@@ -3,7 +3,6 @@
     Tambahkan Transaksi Anda
   </h3>
 
-  <!-- Buttons for selecting Pemasukan or Pengeluaran -->
   <div :class="[textColor, 'text-base flex gap-6 mt-4']">
     <label for="transaction-type">Pilih jenis transaksi :</label>
     <div id="transaction-type" class="flex gap-2 justify-start">
@@ -11,7 +10,7 @@
         type="button"
         :class="{
           'bg-green-500 text-white ': transactionType === 'income',
-          'bg-gray-100 text-gray-700 border border-gray-400 ':
+          'bg-gray-50 text-gray-700 border border-gray-400 ':
             transactionType !== 'income',
         }"
         class="px-5 py-1 rounded-md transition font-normal text-base"
@@ -23,7 +22,7 @@
         type="button"
         :class="{
           'bg-red-500 text-white': transactionType === 'expense',
-          'bg-gray-100 text-gray-700 border border-gray-400':
+          'bg-gray-50 text-gray-700 border border-gray-400':
             transactionType !== 'expense',
         }"
         class="px-5 py-1 rounded-md transition font-normal text-base"
@@ -73,7 +72,7 @@ import { useToast } from "vue-toastification";
 import { ref, computed, onMounted } from "vue";
 
 const text = ref("");
-const amount = ref("");
+const amount = ref(""); // Ensure this starts as an empty string
 const date = ref("");
 const transactionType = ref("");
 
@@ -93,24 +92,21 @@ const props = defineProps({
 
 const setIncome = () => {
   transactionType.value = "income";
-  // Clear the amount value for income
-  amount.value = Math.abs(parseFloat(amount.value)).toString();
+  amount.value = ""; // Set to empty string when selecting income
 };
 
 const setExpense = () => {
   transactionType.value = "expense";
-  // Clear the amount value for expense and ensure it is negative
-  amount.value = (-Math.abs(parseFloat(amount.value) || 0)).toString();
+  amount.value = ""; // Set to empty string when selecting expense
 };
 
 const formattedAmount = computed({
   get() {
-    if (!amount.value || isNaN(parseFloat(amount.value))) {
+    if (!amount.value) {
       return ""; // Return empty string if amount is invalid
     }
-    
+
     const parts = amount.value.split(".");
-    // Ensure the formatted amount is always positive for display
     const displayAmount = Math.abs(parseFloat(amount.value));
     parts[0] = displayAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return parts.join(",");
@@ -130,23 +126,30 @@ const handleAmountChange = () => {
   if (isNaN(parsedAmount)) {
     amount.value = "";
   } else {
-    // Adjust the amount based on the transaction type
     amount.value =
       transactionType.value === "expense"
-        ? (-Math.abs(parsedAmount)).toString() // Ensure it's stored as negative
-        : Math.abs(parsedAmount).toString(); // Positive for income
+        ? (-Math.abs(parsedAmount)).toString()
+        : Math.abs(parsedAmount).toString();
   }
 };
 
 const onSubmit = () => {
+  // Check if the amount is zero
+  const parsedAmount = parseFloat(amount.value);
   if (!text.value || !amount.value || !date.value) {
     toast.error("All fields must be filled.");
+    return;
+  }
+  
+  // Check if the amount is zero
+  if (parsedAmount === 0) {
+    toast.error("Jumlah transaksi tidak boleh nol.");
     return;
   }
 
   const transactionData = {
     text: text.value,
-    amount: parseFloat(amount.value),
+    amount: parsedAmount,
     date: date.value,
   };
 
@@ -154,14 +157,13 @@ const onSubmit = () => {
 
   // Clear the form
   text.value = "";
-  amount.value = "";
+  amount.value = ""; // Clear the amount
   date.value = new Date().toISOString().slice(0, 10);
   transactionType.value = "";
 };
 </script>
 
 <style scoped>
-/* Additional Tailwind classes are applied inline */
 input:disabled {
   background-color: #e0e0e0;
   cursor: not-allowed;

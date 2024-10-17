@@ -3,7 +3,7 @@
     <!-- <h3 :class="[textColor, 'text-sm font-semibold']">Riwayat</h3> -->
 
     <!-- Filter and Sort Controls -->
-    <div class="filter-sort-controls">
+    <div class="filter-sort-controls mt-4">
       <input
         type="text"
         v-model="searchQuery"
