@@ -28,9 +28,9 @@
           <!-- Set to h-full to match layout2 -->
           <layouta
             :class="{
-              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md w-[97.5%] p-3':
+              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md w-[100%] p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md w-[97.5%] p-3':
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md w-[100%] p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative h-full"
@@ -60,9 +60,9 @@
 
           <layoutb
             :class="{
-              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full w-[97.5%] box-border p-3':
+              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full w-[100%] box-border p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full w-[97.5%] box-border p-3':
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full w-[100%] box-border p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative h-full"
@@ -128,7 +128,7 @@
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-4 shadow-xl border rounded-md  h-[43.5vh] box-border"
+          class="p-4 shadow-xl border rounded-md h-[43.5vh] box-border"
         >
           <LineChartBalance
             :transactions="sortedTransactions"

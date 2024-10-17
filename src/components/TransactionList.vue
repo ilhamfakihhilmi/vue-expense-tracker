@@ -25,6 +25,7 @@
         v-for="transaction in paginatedTransactions"
         :key="transaction.id"
         :class="transaction.amount < 0 ? 'minus' : 'plus'"
+        class="capitalize gap-3 text-[13px]"
       >
         {{ transaction.text }}
         <span>Rp.{{ transaction.amount.toLocaleString("id-ID") }}</span>
@@ -43,9 +44,21 @@
 
     <!-- Pagination Controls -->
     <div class="pagination">
-      <button @click="currentPage--" :disabled="currentPage === 1" :class="[textColor, 'text-base form-control ']">Prev</button>
-      <span :class="[textColor, 'text-base form-control ']">{{ currentPage }} / {{ totalPages }}</span>
-      <button @click="currentPage++" :disabled="currentPage === totalPages" :class="[textColor, 'text-base form-control ']">
+      <button
+        @click="currentPage--"
+        :disabled="currentPage === 1"
+        :class="[textColor, 'text-base form-control ']"
+      >
+        Prev
+      </button>
+      <span :class="[textColor, 'text-base form-control ']"
+        >{{ currentPage }} / {{ totalPages }}</span
+      >
+      <button
+        @click="currentPage++"
+        :disabled="currentPage === totalPages"
+        :class="[textColor, 'text-base form-control ']"
+      >
         Next
       </button>
     </div>

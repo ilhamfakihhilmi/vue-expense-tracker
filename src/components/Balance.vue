@@ -2,7 +2,7 @@
   <main class="mb-5">
     <div :class="[textColor, 'text-4xl font-bold mt-3']">
       <p
-        class="text-3xl font-semibold mt-2 backdrop-blur bg-slate-100 bg-opacity-50 border rounded-md inline-block p-5 whitespace-nowrap"
+        class="ml-2 text-xl font-semibold mt-2 backdrop-blur bg-slate-100 bg-opacity-50 border rounded-md inline-block p-2 whitespace-nowrap"
       >
         Rp. {{ formattedTotal }}
       </p>
