@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 :class="computedTextColor" class="text-xs font-semibold">
+    <h2 :class="computedTextColor" class="text-sm font-semibold">
       Grafik Transaksi
     </h2>
     <Line :data="chartData" :options="chartOptions" />
@@ -19,9 +19,8 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 
-// Register required components of chart.js
 ChartJS.register(
   Title,
   Tooltip,
@@ -44,33 +43,61 @@ const props = defineProps({
   },
 });
 
-// Prepare chart data based on transactions
-const chartData = computed(() => {
+// State for chart data
+const chartData = ref({
+  labels: [],
+  datasets: [],
+});
+
+// Separate transactions into income and expenses
+const processChartData = () => {
   const labels = props.transactions.map((transaction) =>
     new Date(transaction.date).toLocaleDateString("id-ID")
   );
-  const data = props.transactions.map((transaction) => transaction.amount);
 
-  return {
+  const incomeData = props.transactions
+    .filter((transaction) => transaction.amount > 0)
+    .map((transaction) => transaction.amount);
+
+  const expenseData = props.transactions
+    .filter((transaction) => transaction.amount < 0)
+    .map((transaction) => Math.abs(transaction.amount));
+
+  chartData.value = {
     labels,
     datasets: [
       {
-        label: "Jumlah Transaksi (Rp)",
-        data,
+        label: "Pemasukan (Rp)",
+        data: incomeData,
         fill: false,
-        borderColor: isDarkMode.value
-          ? "rgb(53, 162, 235)"
-          : "rgb(75, 192, 192)",
+        borderColor: "rgb(75, 192, 192)", // Color for income line
         tension: 0.1,
-        pointBackgroundColor: isDarkMode.value
-          ? "rgb(53, 162, 235)"
-          : "rgb(75, 192, 192)",
+        pointBackgroundColor: "rgb(75, 192, 192)",
+        pointRadius: 5,
+        pointHoverRadius: 8,
+      },
+      {
+        label: "Pengeluaran (Rp)",
+        data: expenseData,
+        fill: false,
+        borderColor: "rgb(255, 99, 132)", // Color for expense line
+        tension: 0.1,
+        pointBackgroundColor: "rgb(255, 99, 132)",
         pointRadius: 5,
         pointHoverRadius: 8,
       },
     ],
   };
-});
+};
+
+// Watch the transactions prop for changes and update the chart
+watch(
+  () => props.transactions,
+  () => {
+    processChartData(); // Recalculate chart data when transactions change
+  },
+  { deep: true, immediate: true } // Deep watch for nested changes, trigger on component mount
+);
 
 // Determine if dark mode is active
 const isDarkMode = computed(() =>

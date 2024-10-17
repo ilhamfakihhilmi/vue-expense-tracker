@@ -1,17 +1,22 @@
 <template>
   <main
     :class="textColor"
-    class="flex gap-10  items-start w-full h-full"
+    class="flex gap-8 w-full h-full justify-center items-center"
   >
-    <div>
-      <h4 class="font-normal">Pemasukan</h4>
-      <p class="text-2xl text-green-500 font-medium mt-2">
+    <div class="w-1/2 ml-[15%]">
+      <h4 class="font-medium text-2xl capitalize">Pemasukan</h4>
+      <p
+        class="text-3xl font-semibold mt-2 backdrop-blur bg-slate-100 bg-opacity-50 border rounded-md w-full h-full flex-row p-5 whitespace-nowrap"
+      >
         Rp. {{ formattedIncome }}
       </p>
     </div>
-    <div>
-      <h4 class="font-normal">Pengeluaran</h4>
-      <p class="text-2xl text-red-500 font-medium mt-2">
+    <div class="border-x border-slate-800 h-1/2"></div>
+    <div class="w-1/2 mr-20">
+      <h4 class="font-medium text-2xl capitalize">Pengeluaran</h4>
+      <p
+        class="text-3xl font-semibold mt-2 backdrop-blur bg-slate-100 bg-opacity-50 border rounded-md w-full h-full flex-row p-5 whitespace-nowrap"
+      >
         Rp. {{ formattedExpenses }}
       </p>
     </div>

@@ -5,43 +5,93 @@
         @click="toggleTheme"
         class="absolute mt-4 p-2 bg-blue-500 text-white rounded-md"
       >
-        <span v-if="isDayMode" class="text-lg">
-          🌞
-        </span>
-        <span v-else class="text-lg">
-          🌜
-        </span>
+        <span v-if="isDayMode" class="text-lg"> 🌞 </span>
+        <span v-else class="text-lg"> 🌜 </span>
       </button>
     </toggle>
 
-    <main
+    <layout1
       :class="{
         'bg-white': !isDarkMode,
         'bg-gray-900': isDarkMode,
       }"
       class="grid grid-cols-[3fr_1fr] h-full w-full box-border overflow-hidden"
     >
-      <layout1
+      <div
         :class="{
           'bg-white': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
         class="grid grid-cols-2 gap-4 h-full box-border"
       >
-        <div
-          :class="{
-            'bg-white border-gray-200': !isDarkMode,
-            'bg-gray-700 border-gray-700': isDarkMode,
-          }"
-          class="p-8 shadow-xl border rounded-md h-full box-border"
-        >
-          <Header :textColor="textColor" />
-          <Balance :textColor="textColor" :total="total" />
-          <IncomeExpenses
-            :income="income"
-            :expenses="expenses"
-            :textColor="textColor"
-          />
+        <div class="grid grid-rows-2 gap-4">
+          <layouta
+            :class="{
+              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md h-full box-border p-10':
+                !isDarkMode,
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border p-10':
+                isDarkMode,
+            }"
+            class="col-span-1 relative"
+          >
+            <div
+              class="absolute top-4 right-4 bg-slate-100 w-12 h-12 rounded-full flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="w-6 h-6 text-gray-600"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3C10.343 3 9 4.343 9 6v1h6V6c0-1.657-1.343-3-3-3zm3 3h2a2 2 0 012 2v2.342a4.017 4.017 0 00-.416.198C16.62 10.087 15.907 10 15 10h-6c-.907 0-1.62.087-2.584.54A4.017 4.017 0 006 9.342V7a2 2 0 012-2h2V6c0-1.105.895-2 2-2s2 .895 2 2v1zm-7 6v1a5.99 5.99 0 00.4 2.292c.383.987.917 1.896 1.6 2.684.68.784 1.472 1.433 2.31 2.024A4.987 4.987 0 0112 21c.732 0 1.432-.168 2.048-.491a4.987 4.987 0 002.31-2.024c.683-.788 1.217-1.697 1.6-2.684A5.99 5.99 0 0015 15v-1H9z"
+                />
+              </svg>
+            </div>
+
+            <Header :textColor="textColor" />
+            <Balance :textColor="textColor" :total="total" />
+          </layouta>
+
+          <layoutb
+            :class="{
+              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full box-border':
+                !isDarkMode,
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border':
+                isDarkMode,
+            }"
+            class="col-span-1 relative"
+          >
+            <div
+              class="absolute top-4 right-4 bg-slate-100 w-12 h-12 rounded-full flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="w-6 h-6 text-gray-600"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 10h2v11H3V10zm6-4h2v15H9V6zm6 8h2v7h-2v-7zm6-5h2v12h-2V9z"
+                />
+              </svg>
+            </div>
+
+            <IncomeExpenses
+              :income="income"
+              :expenses="expenses"
+              :textColor="textColor"
+              class="flex flex-row items-center justify-center"
+            />
+          </layoutb>
         </div>
         <div
           :class="{
@@ -62,8 +112,8 @@
           }"
           class="p-4 shadow-xl border rounded-md h-full box-border"
         >
-          <LineChartBalance
-            :transactions="sortedTransactions"
+          <AddTransaction
+            @transactionSubmitted="handleTransactionSubmitted"
             :textColor="textColor"
           />
         </div>
@@ -74,12 +124,12 @@
           }"
           class="p-4 shadow-xl border rounded-md h-full box-border"
         >
-          <AddTransaction
-            @transactionSubmitted="handleTransactionSubmitted"
+          <LineChartBalance
+            :transactions="sortedTransactions"
             :textColor="textColor"
           />
         </div>
-      </layout1>
+      </div>
 
       <layout2
         :class="{
@@ -95,6 +145,13 @@
           }"
           class="p-4 shadow-xl border rounded-md text-base font-normal h-full box-border"
         >
+          <button
+            v-if="hasTransactions"
+            class="delete-all-btn"
+            @click="deleteAllTransactions"
+          >
+            <span class="icon">🗑️</span> Hapus Semua Transaksi
+          </button>
           <TransactionList
             :transactions="transactions"
             @transactionDeleted="handleTransactionDeleted"
@@ -102,12 +159,12 @@
           />
         </div>
       </layout2>
-    </main>
+    </layout1>
   </main>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useToast } from "vue-toastification";
 
 // Import components
@@ -165,26 +222,38 @@ const themeClass = computed(() =>
 const textColor = computed(() =>
   isDarkMode.value ? "text-white" : "text-black"
 );
+
+// Auto-refresh functionality
+let refreshInterval;
+
+onMounted(() => {
+  // Set interval to refresh every 5 seconds
+  refreshInterval = setInterval(() => {
+    location.reload();
+  }, 300000); // 5000 milliseconds = 5 seconds
+});
+
+onBeforeUnmount(() => {
+  // Clear the interval when the component is unmounted to prevent memory leaks
+  clearInterval(refreshInterval);
+});
 </script>
 
-<style scoped>
-.container {
-  padding: 20px;
-}
-
+<style>
+/* Add your styles here */
 .delete-all-btn {
-  margin: 10px 0;
-  padding: 5px;
-  background-color: rgb(255, 148, 148);
-  color: white;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.25rem;
+  background-color: #f56565;
+  color: white;
   cursor: pointer;
-  display: flex;
-  align-items: center;
+  margin-bottom: 1rem;
 }
-
-.delete-all-btn .icon {
-  margin-right: 5px;
+.delete-all-btn:hover {
+  background-color: #e53e3e;
+}
+.icon {
+  margin-right: 0.5rem;
 }
 </style>

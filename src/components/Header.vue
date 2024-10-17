@@ -1,6 +1,6 @@
 <template>
   <header :class="textColor">
-    <h1 class="text-2xl font-bold">Saldo Anda</h1>
+    <h1 class="text-2xl font-semibold text-white">Saldo Anda</h1>
   </header>
 </template>
 

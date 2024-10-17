@@ -1,7 +1,7 @@
 <template>
     <div>
       <!-- Optional: Chart title -->
-      <h2 :class="[textColor, 'text-xs font-semibold']">Grafik Balance</h2>
+      <h2 :class="[textColor, 'text-sm font-semibold']">Grafik Balance</h2>
   
       <!-- Chart Canvas -->
       <canvas ref="chartCanvas"></canvas>

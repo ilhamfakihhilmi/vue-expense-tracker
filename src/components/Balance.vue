@@ -1,7 +1,11 @@
 <template>
   <main class="mb-5">
-    <div :class="[textColor, 'text-4xl font-bold mt-3 ']">
-      <h1>Rp. {{ formattedTotal }}</h1>
+    <div :class="[textColor, 'text-4xl font-bold mt-3']">
+      <p
+        class="text-3xl font-semibold mt-2 backdrop-blur bg-slate-100 bg-opacity-50 border rounded-md inline-block p-5 whitespace-nowrap"
+      >
+        Rp. {{ formattedTotal }}
+      </p>
     </div>
   </main>
 </template>

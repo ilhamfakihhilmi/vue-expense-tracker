@@ -1,6 +1,6 @@
 <template>
-  <h3 :class="[textColor, 'text-base font-semibold']">
-    Tambahkan Transaksi anda
+  <h3 :class="[textColor, 'text-sm font-semibold']">
+    Tambahkan Transaksi Anda
   </h3>
 
   <!-- Buttons for selecting Pemasukan or Pengeluaran -->
@@ -70,7 +70,7 @@
     </div> -->
     <div class="flex justify-end">
       <button
-        class="bg-blue-500 text-sm text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4"
+        class="bg-blue-500 text-xs text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4"
         :disabled="!transactionType"
       >
         Tambah Transaksi

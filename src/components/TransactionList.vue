@@ -11,10 +11,10 @@
         class="filter-input"
       />
       <select v-model="sortOption" class="sort-select">
-        <option value="amount-asc">Sortir: Terendah ke Tertinggi</option>
-        <option value="amount-desc">Sortir: Tertinggi ke Terendah</option>
-        <option value="time-asc">Sortir: Waktu (Terbaru ke Terlama)</option>
-        <option value="time-desc">Sortir: Waktu (Terlama ke Terbaru)</option>
+        <option value="amount-asc">Terendah ke Tertinggi</option>
+        <option value="amount-desc">Tertinggi ke Terendah</option>
+        <option value="time-asc">Waktu (Terbaru ke Terlama)</option>
+        <option value="time-desc">Waktu (Terlama ke Terbaru)</option>
       </select>
     </div>
 
