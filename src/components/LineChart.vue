@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 :class="computedTextColor" class="text-xl font-semibold mb-8">
+    <h2 :class="computedTextColor" class="text-xs font-semibold">
       Grafik Transaksi
     </h2>
     <Line :data="chartData" :options="chartOptions" />
@@ -58,9 +58,13 @@ const chartData = computed(() => {
         label: "Jumlah Transaksi (Rp)",
         data,
         fill: false,
-        borderColor: isDarkMode.value ? "rgb(53, 162, 235)" : "rgb(75, 192, 192)",
+        borderColor: isDarkMode.value
+          ? "rgb(53, 162, 235)"
+          : "rgb(75, 192, 192)",
         tension: 0.1,
-        pointBackgroundColor: isDarkMode.value ? "rgb(53, 162, 235)" : "rgb(75, 192, 192)",
+        pointBackgroundColor: isDarkMode.value
+          ? "rgb(53, 162, 235)"
+          : "rgb(75, 192, 192)",
         pointRadius: 5,
         pointHoverRadius: 8,
       },

@@ -1,34 +1,39 @@
 <template>
-  <main :class="['w-screen h-screen', themeClass]">
-    <div class="flex justify-end">
+  <main :class="['w-full h-screen p-4', themeClass]">
+    <toggle class="flex justify-end">
       <button
         @click="toggleTheme"
         class="absolute mt-4 p-2 bg-blue-500 text-white rounded-md"
       >
-        Toggle Theme
+        <span v-if="isDayMode" class="text-lg">
+          🌞
+        </span>
+        <span v-else class="text-lg">
+          🌜
+        </span>
       </button>
-    </div>
+    </toggle>
 
-    <div
+    <main
       :class="{
         'bg-white': !isDarkMode,
         'bg-gray-900': isDarkMode,
       }"
-      class="grid grid-cols-2 p-4 transition-colors duration-300 h-full"
+      class="grid grid-cols-[3fr_1fr] h-full w-full box-border overflow-hidden"
     >
-      <div
+      <layout1
         :class="{
           'bg-white': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
-        class="grid grid-cols-2 gap-4 transition-colors duration-300 h-full"
+        class="grid grid-cols-2 gap-4 h-full box-border"
       >
         <div
           :class="{
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-8 shadow-xl border rounded-md h-full"
+          class="p-8 shadow-xl border rounded-md h-full box-border"
         >
           <Header :textColor="textColor" />
           <Balance :textColor="textColor" :total="total" />
@@ -43,7 +48,7 @@
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-4 shadow-xl border rounded-md h-full"
+          class="p-4 shadow-xl border rounded-md h-full box-border"
         >
           <LineChart
             :transactions="sortedTransactions"
@@ -55,7 +60,7 @@
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-4 shadow-xl border rounded-md h-full"
+          class="p-4 shadow-xl border rounded-md h-full box-border"
         >
           <LineChartBalance
             :transactions="sortedTransactions"
@@ -67,43 +72,37 @@
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-4 shadow-xl border rounded-md h-full"
+          class="p-4 shadow-xl border rounded-md h-full box-border"
         >
           <AddTransaction
             @transactionSubmitted="handleTransactionSubmitted"
             :textColor="textColor"
           />
         </div>
-      </div>
-      <div
+      </layout1>
+
+      <layout2
         :class="{
           'bg-white': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
-        class="grid grid-cols-1 gap-4 pl-4 transition-colors duration-300 h-full"
+        class="grid grid-cols-1 gap-4 pl-4 h-full w-full box-border overflow-y-auto"
       >
         <div
           :class="{
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-4 shadow-xl border rounded-md text-base font-normal h-full"
+          class="p-4 shadow-xl border rounded-md text-base font-normal h-full box-border"
         >
           <TransactionList
             :transactions="transactions"
             @transactionDeleted="handleTransactionDeleted"
             :textColor="textColor"
           />
-          <!-- <button
-          v-if="hasTransactions"
-          class="bg-red-400 border rounded-md p-2"
-          @click="deleteAllTransactions"
-        >
-          <span class="icon">🗑️</span> Hapus Semua Transaksi
-        </button> -->
         </div>
-      </div>
-    </div>
+      </layout2>
+    </main>
   </main>
 </template>
 

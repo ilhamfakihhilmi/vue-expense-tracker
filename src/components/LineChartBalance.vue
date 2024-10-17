@@ -1,17 +1,17 @@
 <template>
     <div>
       <!-- Optional: Chart title -->
-      <!-- <h2 :class="[textColor, 'text-xl font-semibold mb-8']">Grafik Balance</h2> -->
+      <h2 :class="[textColor, 'text-xs font-semibold']">Grafik Balance</h2>
   
       <!-- Chart Canvas -->
       <canvas ref="chartCanvas"></canvas>
   
       <!-- Summary Section -->
-      <div class="mt-4">
-        <h3 :class="[textColor, 'text-lg font-semibold']">Rangkuman</h3>
-        <p>Total Transaksi: {{ totalTransactions }}</p>
-        <p>Saldo Total: {{ totalBalance.toLocaleString() }} </p>
-        <p>Rata-rata Transaksi: {{ averageTransaction.toLocaleString() }} </p>
+      <div class="mt-2">
+        <h3 :class="[textColor, 'text-xs font-semibold']">Rangkuman</h3>
+        <p :class="[textColor, 'text-xs font-semibold']">Total Transaksi: {{ totalTransactions }}</p>
+        <p :class="[textColor, 'text-xs font-semibold']">Saldo Total: {{ totalBalance.toLocaleString() }} </p>
+        <p :class="[textColor, 'text-xs font-semibold']">Rata-rata Transaksi: {{ averageTransaction.toLocaleString() }} </p>
       </div>
     </div>
   </template>
@@ -122,7 +122,7 @@
   <style scoped>
   canvas {
     width: 100% !important;
-    height: 220px !important;
+    height: 200px !important;
   }
   </style>
   

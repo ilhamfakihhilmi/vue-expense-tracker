@@ -4,8 +4,8 @@
   </h3>
 
   <!-- Buttons for selecting Pemasukan or Pengeluaran -->
-  <div :class="[textColor, 'text-base']">
-    <label for="transaction-type">Pilih jenis transaksi</label>
+  <div :class="[textColor, 'text-base flex gap-6 mt-4']">
+    <label for="transaction-type">Pilih jenis transaksi :</label>
     <div id="transaction-type" class="flex gap-2 justify-start">
       <button
         type="button"
@@ -70,10 +70,10 @@
     </div> -->
     <div class="flex justify-end">
       <button
-        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition mt-4"
+        class="bg-blue-500 text-sm text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4"
         :disabled="!transactionType"
       >
-        Tambahkan Transaksi
+        Tambah Transaksi
       </button>
     </div>
   </form>
