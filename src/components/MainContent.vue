@@ -28,9 +28,9 @@
           <!-- Set to h-full to match layout2 -->
           <layouta
             :class="{
-              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md w-[100%] p-3':
+              'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md w-[100%] p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md w-[100%] p-3':
+              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md w-[100%] p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative h-full"
@@ -60,9 +60,9 @@
 
           <layoutb
             :class="{
-              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full w-[100%] box-border p-3':
+              'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full w-[100%] box-border p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full w-[100%] box-border p-3':
+              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md h-full w-[100%] box-border p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative h-full"
