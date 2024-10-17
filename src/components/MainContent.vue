@@ -15,24 +15,25 @@
         'bg-white': !isDarkMode,
         'bg-gray-900': isDarkMode,
       }"
-      class="grid grid-cols-[3fr_1fr] h-full w-full box-border"
+      class="grid grid-cols-[3fr_1fr] h-[95vh] w-full box-border"
     >
       <div
         :class="{
           'bg-white': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
-        class="grid grid-cols-2 gap-4 h-full box-border"
+        class="grid grid-cols-2 gap-4 box-border h-[9vh]"
       >
-        <div class="grid grid-rows-2 gap-1 h-full">
+        <div class="grid grid-rows-2 gap-4 h-[49vh]">
+          <!-- Set to h-full to match layout2 -->
           <layouta
             :class="{
-              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md h-full box-border p-3':
+              'bg-[#6590FF] border-gray-200 shadow-xl border rounded-md w-[97.5%] p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border p-3':
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md w-[97.5%] p-3':
                 isDarkMode,
             }"
-            class="col-span-1 relative"
+            class="col-span-1 relative h-full"
           >
             <div
               class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
@@ -59,12 +60,12 @@
 
           <layoutb
             :class="{
-              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full box-border p-3':
+              'bg-[#FFC23F] border-gray-200 shadow-xl border rounded-md h-full w-[97.5%] box-border p-3':
                 !isDarkMode,
-              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full box-border p-3':
+              'bg-gray-700 border-gray-700 shadow-xl border rounded-md h-full w-[97.5%] box-border p-3':
                 isDarkMode,
             }"
-            class="col-span-1 relative"
+            class="col-span-1 relative h-full"
           >
             <div
               class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
@@ -94,36 +95,40 @@
           </layoutb>
         </div>
 
+        <div class="grid grid-rows-2 gap-4 h-[49vh]">
+          <div
+            :class="{
+              'bg-white border-gray-200': !isDarkMode,
+              'bg-gray-700 border-gray-700': isDarkMode,
+            }"
+            class="p-4 shadow-xl border rounded-md h-[49vh] box-border"
+          >
+            <AddTransaction
+              @transactionSubmitted="handleTransactionSubmitted"
+              :textColor="textColor"
+            />
+          </div>
+        </div>
+
         <div
           :class="{
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-4 shadow-xl border rounded-md h-full box-border"
+          class="p-4 shadow-xl border rounded-md h-[43.5vh] box-border"
         >
           <LineChart
             :transactions="sortedTransactions"
             :textColor="textColor"
           />
         </div>
+
         <div
           :class="{
             'bg-white border-gray-200': !isDarkMode,
             'bg-gray-700 border-gray-700': isDarkMode,
           }"
-          class="p-4 shadow-xl border rounded-md h-full box-border"
-        >
-          <AddTransaction
-            @transactionSubmitted="handleTransactionSubmitted"
-            :textColor="textColor"
-          />
-        </div>
-        <div
-          :class="{
-            'bg-white border-gray-200': !isDarkMode,
-            'bg-gray-700 border-gray-700': isDarkMode,
-          }"
-          class="p-4 shadow-xl border rounded-md h-full box-border"
+          class="p-4 shadow-xl border rounded-md  h-[43.5vh] box-border"
         >
           <LineChartBalance
             :transactions="sortedTransactions"
@@ -137,7 +142,7 @@
           'bg-white': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
-        class="grid grid-cols-1 gap-4 pl-4 h-full w-full box-border overflow-y-auto"
+        class="grid grid-cols-1 gap-4 pl-4 h-[95vh] w-full box-border overflow-y-auto"
       >
         <div
           :class="{
@@ -227,34 +232,32 @@ const textColor = computed(() =>
 // Auto-refresh functionality
 let refreshInterval;
 
-onMounted(() => {
-  // Set interval to refresh every 5 seconds
+const startAutoRefresh = () => {
   refreshInterval = setInterval(() => {
-    location.reload();
-  }, 300000); // 5000 milliseconds = 5 seconds
+    // Fetch data or perform any desired action
+  }, 10000); // Refresh every 10 seconds
+};
+
+onMounted(() => {
+  startAutoRefresh();
 });
 
 onBeforeUnmount(() => {
-  // Clear the interval when the component is unmounted to prevent memory leaks
   clearInterval(refreshInterval);
 });
 </script>
 
-<style>
-/* Add your styles here */
+<style scoped>
 .delete-all-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  background-color: #f56565;
+  background-color: #f87171;
   color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-bottom: 1rem;
 }
+
 .delete-all-btn:hover {
-  background-color: #e53e3e;
-}
-.icon {
-  margin-right: 0.5rem;
+  background-color: #c62828;
 }
 </style>

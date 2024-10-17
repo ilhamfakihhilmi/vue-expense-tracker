@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+    <WelcomePopup />
     <MainContent />
   </div>
 </template>
 
 <script setup>
-import MainContent from "./components/MainContent.vue";
+import MainContent from "../src/components/MainContent.vue";
+import WelcomePopup from "../src/components/WelcomePopup.vue";
 </script>
 
 <style>

@@ -29,7 +29,7 @@
         class="px-5 py-1 rounded-md transition font-normal text-base"
         @click="setExpense"
       >
-        Pengeluaran 
+        Pengeluaran
       </button>
     </div>
   </div>
@@ -57,17 +57,6 @@
         class="border border-gray-300 px-4 py-2 rounded-md"
       />
     </div>
-    <!-- New Date Input Field -->
-    <!-- <div :class="[textColor, 'text-base form-control ']">
-      <label for="date" class="mr-4">Tanggal Transaksi </label>
-      <input
-        type="date"
-        id="date"
-        v-model="date"
-        :disabled="!transactionType"
-        class="border border-gray-300 rounded-md"
-      />
-    </div> -->
     <div class="flex justify-end">
       <button
         class="bg-blue-500 text-xs text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4"
@@ -104,22 +93,26 @@ const props = defineProps({
 
 const setIncome = () => {
   transactionType.value = "income";
-  if (amount.value) {
-    amount.value = Math.abs(parseFloat(amount.value)).toString();
-  }
+  // Clear the amount value for income
+  amount.value = Math.abs(parseFloat(amount.value)).toString();
 };
 
 const setExpense = () => {
   transactionType.value = "expense";
-  if (amount.value) {
-    amount.value = (-Math.abs(parseFloat(amount.value))).toString();
-  }
+  // Clear the amount value for expense and ensure it is negative
+  amount.value = (-Math.abs(parseFloat(amount.value) || 0)).toString();
 };
 
 const formattedAmount = computed({
   get() {
+    if (!amount.value || isNaN(parseFloat(amount.value))) {
+      return ""; // Return empty string if amount is invalid
+    }
+    
     const parts = amount.value.split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    // Ensure the formatted amount is always positive for display
+    const displayAmount = Math.abs(parseFloat(amount.value));
+    parts[0] = displayAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return parts.join(",");
   },
   set(value) {
@@ -137,10 +130,11 @@ const handleAmountChange = () => {
   if (isNaN(parsedAmount)) {
     amount.value = "";
   } else {
+    // Adjust the amount based on the transaction type
     amount.value =
       transactionType.value === "expense"
-        ? (-Math.abs(parsedAmount)).toString()
-        : Math.abs(parsedAmount).toString();
+        ? (-Math.abs(parsedAmount)).toString() // Ensure it's stored as negative
+        : Math.abs(parsedAmount).toString(); // Positive for income
   }
 };
 
@@ -158,6 +152,7 @@ const onSubmit = () => {
 
   emit("transactionSubmitted", transactionData);
 
+  // Clear the form
   text.value = "";
   amount.value = "";
   date.value = new Date().toISOString().slice(0, 10);
