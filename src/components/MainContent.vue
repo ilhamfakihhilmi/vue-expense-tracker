@@ -19,20 +19,20 @@
     >
       <div
         :class="{
-          'bg-white': !isDarkMode,
+          'bg-red': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
-        class="grid grid-cols-1 lg:grid-cols-2 gap-4 box-border h-[9vh]"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-4 box-border h-full w-full"
       >
         <div
-          class="grid grid-rows-2 gap-4 h-[49vh] w-[100%] md:w-[10%] lg:w-[100%]"
+          class="grid grid-rows-2 gap-4  w-[100%] md:w-[10%] lg:w-[100%]"
         >
           <!-- Set to h-full to match layout2 -->
           <layouta
             :class="{
-              'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md lg:w-[100%] md:[100%]  w-[80%]  p-3':
+              'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md lg:w-[100%] md:[100%]  w-[100%]  p-3':
                 !isDarkMode,
-              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md  lg:w-[100%] md:[100%] w-[80%] p-3':
+              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md  lg:w-[100%] md:[100%] w-[100%] p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative h-full"
@@ -62,9 +62,9 @@
 
           <layoutb
             :class="{
-              'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full  lg:w-[100%] md:[100%] w-[80%] box-border p-3':
+              'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full  lg:w-[100%] md:[100%] w-[100%] box-border p-3':
                 !isDarkMode,
-              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[80%] box-border p-3':
+              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
                 isDarkMode,
             }"
             class="col-span-1 relative h-full"
