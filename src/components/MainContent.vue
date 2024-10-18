@@ -15,22 +15,22 @@
         'bg-white': !isDarkMode,
         'bg-gray-900': isDarkMode,
       }"
-      class="grid grid-cols-[3fr_1fr] h-[95vh] w-full box-border"
+      class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] h-[full] lg:h-[95vh]   box-border"
     >
       <div
         :class="{
           'bg-white': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
-        class="grid grid-cols-2 gap-4 box-border h-[9vh]"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-4 box-border h-[9vh]"
       >
         <div
-          class="grid grid-rows-2 gap-4 h-[49vh] w-[10%] md:w-[10%] lg:w-[100%]"
+          class="grid grid-rows-2 gap-4 h-[49vh] w-[20%] md:w-[10%] lg:w-[100%]"
         >
           <!-- Set to h-full to match layout2 -->
           <layouta
             :class="{
-              'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md lg:w-[100%] md:[100%]   w-full p-3':
+              'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md lg:w-[100%] md:[100%]  w-[80%]  p-3':
                 !isDarkMode,
               'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md  lg:w-[100%] md:[100%] w-[80%] p-3':
                 isDarkMode,
@@ -97,20 +97,20 @@
           </layoutb>
         </div>
 
-        <div class="grid grid-rows-2 gap-4 h-[49vh]">
+    
           <div
             :class="{
               'bg-white border-gray-200': !isDarkMode,
               'bg-gray-700 border-gray-700': isDarkMode,
             }"
-            class="p-4 shadow-xl border rounded-md h-[49vh] box-border"
+            class="p-4 shadow-xl border rounded-md h-[49vh] box-border lg:w-full w-[100%]"
           >
             <AddTransaction
               @transactionSubmitted="handleTransactionSubmitted"
               :textColor="textColor"
             />
           </div>
-        </div>
+       
 
         <div
           :class="{
@@ -137,6 +137,26 @@
             :textColor="textColor"
           />
         </div>
+        <div
+          :class="{
+            'bg-white border-gray-200': !isDarkMode,
+            'bg-gray-700 border-gray-700': isDarkMode,
+          }"
+          class="p-4 shadow-xl border rounded-md text-base font-normal h-full box-border lg:hidden z-30"
+        >
+          <button
+            v-if="hasTransactions"
+            class="delete-all-btn"
+            @click="deleteAllTransactions"
+          >
+            <span class="icon">🗑️</span> Hapus Semua Transaksi
+          </button>
+          <TransactionList
+            :transactions="transactions"
+            @transactionDeleted="handleTransactionDeleted"
+            :textColor="textColor"
+          />
+        </div>
       </div>
 
       <layout2
@@ -144,7 +164,7 @@
           'bg-white': !isDarkMode,
           'bg-gray-900': isDarkMode,
         }"
-        class="grid grid-cols-1 gap-4 pl-4 h-[95vh] w-full box-border overflow-y-auto"
+        class="grid grid-cols-1 gap-4 pl-4 h-[95vh] w-full box-border overflow-y-auto hidden md:block"
       >
         <div
           :class="{
