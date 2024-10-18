@@ -1,6 +1,6 @@
 <template>
   <main :class="['w-[100%] md:w-[100%] lg:w-[100%] h-screen p-4 ', themeClass]">
-    <toggle class="flex justify-end">
+    <!-- <toggle class="flex justify-end">
       <button
         @click="toggleTheme"
         class="absolute mt-4 p-2 bg-blue-500 text-white rounded-md"
@@ -8,14 +8,14 @@
         <span v-if="isDayMode" class="text-lg"> 🌞 </span>
         <span v-else class="text-lg"> 🌜 </span>
       </button>
-    </toggle>
+    </toggle> -->
 
     <layout1
       :class="{
         'bg-white': !isDarkMode,
         'bg-gray-900': isDarkMode,
       }"
-      class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] h-[full] lg:h-[95vh]   box-border"
+      class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] h-[full] lg:h-[95vh] box-border"
     >
       <div
         :class="{
@@ -25,7 +25,7 @@
         class="grid grid-cols-1 lg:grid-cols-2 gap-4 box-border h-[9vh]"
       >
         <div
-          class="grid grid-rows-2 gap-4 h-[49vh] w-[20%] md:w-[10%] lg:w-[100%]"
+          class="grid grid-rows-2 gap-4 h-[49vh] w-[100%] md:w-[10%] lg:w-[100%]"
         >
           <!-- Set to h-full to match layout2 -->
           <layouta
@@ -97,20 +97,18 @@
           </layoutb>
         </div>
 
-    
-          <div
-            :class="{
-              'bg-white border-gray-200': !isDarkMode,
-              'bg-gray-700 border-gray-700': isDarkMode,
-            }"
-            class="p-4 shadow-xl border rounded-md h-[49vh] box-border lg:w-full w-[100%]"
-          >
-            <AddTransaction
-              @transactionSubmitted="handleTransactionSubmitted"
-              :textColor="textColor"
-            />
-          </div>
-       
+        <div
+          :class="{
+            'bg-white border-gray-200': !isDarkMode,
+            'bg-gray-700 border-gray-700': isDarkMode,
+          }"
+          class="p-4 shadow-xl border rounded-md h-[49vh] box-border lg:w-full w-[100%]"
+        >
+          <AddTransaction
+            @transactionSubmitted="handleTransactionSubmitted"
+            :textColor="textColor"
+          />
+        </div>
 
         <div
           :class="{
