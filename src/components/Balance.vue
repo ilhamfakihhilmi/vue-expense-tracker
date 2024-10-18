@@ -1,6 +1,6 @@
 <template>
-  <main class="mb-5">
-    <div :class="[textColor, 'text-4xl font-bold mt-3']">
+  <main >
+    <div :class="[textColor, 'text-4xl font-bold mt-0 lg:mt-3']">
       <p
         class="ml-2 text-xl font-semibold mt-2 backdrop-blur bg-slate-100 bg-opacity-50 border rounded-md inline-block p-2 whitespace-nowrap"
       >

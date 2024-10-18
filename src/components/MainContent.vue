@@ -1,6 +1,6 @@
 <template>
   <main :class="['w-[100%] md:w-[100%] lg:w-[100%] h-screen p-4 ', themeClass]">
-    <!-- <toggle class="flex justify-end">
+    <toggle class="flex justify-end">
       <button
         @click="toggleTheme"
         class="absolute mt-4 p-2 bg-blue-500 text-white rounded-md"
@@ -8,7 +8,7 @@
         <span v-if="isDayMode" class="text-lg"> 🌞 </span>
         <span v-else class="text-lg"> 🌜 </span>
       </button>
-    </toggle> -->
+    </toggle>
 
     <layout1
       :class="{
@@ -24,8 +24,9 @@
         }"
         class="grid grid-cols-1 lg:grid-cols-2 gap-4 box-border h-full w-full"
       >
+        <!-- hidden mobile -->
         <div
-          class="grid grid-rows-2 gap-4  w-[100%] md:w-[10%] lg:w-[100%]"
+          class="grid lg:grid-rows-2 gap-4 w-[90%] md:w-[10%] lg:w-[100%] hidden md:grid"
         >
           <!-- Set to h-full to match layout2 -->
           <layouta
@@ -62,7 +63,7 @@
 
           <layoutb
             :class="{
-              'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full  lg:w-[100%] md:[100%] w-[100%] box-border p-3':
+              'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
                 !isDarkMode,
               'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
                 isDarkMode,
@@ -96,6 +97,75 @@
             />
           </layoutb>
         </div>
+
+        <!-- hidden dekstpp -->
+        <layouta
+          :class="{
+            'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md lg:w-[100%] md:[100%] w-[100%] p-3':
+              !isDarkMode,
+            'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md lg:w-[100%] md:[100%] w-[100%] p-3':
+              isDarkMode,
+          }"
+          class="col-span-1 relative h-full block md:hidden"
+        >
+          <div
+            class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-gray-600"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 3C10.343 3 9 4.343 9 6v1h6V6c0-1.657-1.343-3-3-3zm3 3h2a2 2 0 012 2v2.342a4.017 4.017 0 00-.416.198C16.62 10.087 15.907 10 15 10h-6c-.907 0-1.62.087-2.584.54A4.017 4.017 0 006 9.342V7a2 2 0 012-2h2V6c0-1.105.895-2 2-2s2 .895 2 2v1zm-7 6v1a5.99 5.99 0 00.4 2.292c.383.987.917 1.896 1.6 2.684.68.784 1.472 1.433 2.31 2.024A4.987 4.987 0 0112 21c.732 0 1.432-.168 2.048-.491a4.987 4.987 0 002.31-2.024c.683-.788 1.217-1.697 1.6-2.684A5.99 5.99 0 0015 15v-1H9z"
+              />
+            </svg>
+          </div>
+
+          <Header :textColor="textColor" />
+          <Balance :textColor="textColor" :total="total" />
+        </layouta>
+
+        <layoutb
+          :class="{
+            'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
+              !isDarkMode,
+            'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
+              isDarkMode,
+          }"
+          class="col-span-1 relative h-full block md:hidden"
+        >
+          <div
+            class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-gray-600"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 10h2v11H3V10zm6-4h2v15H9V6zm6 8h2v7h-2v-7zm6-5h2v12h-2V9z"
+              />
+            </svg>
+          </div>
+
+          <IncomeExpenses
+            :income="income"
+            :expenses="expenses"
+            :textColor="textColor"
+            class="flex flex-row items-center justify-center"
+          />
+        </layoutb>
 
         <div
           :class="{
