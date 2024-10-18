@@ -17,6 +17,7 @@
       }"
       class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] h-[full] lg:h-[95vh] box-border"
     >
+    
       <div
         :class="{
           'bg-red': !isDarkMode,
@@ -28,6 +29,7 @@
         <div
           class="grid lg:grid-rows-2 gap-4 w-[90%] md:w-[10%] lg:w-[100%] hidden md:grid"
         >
+        
           <!-- Set to h-full to match layout2 -->
           <layouta
             :class="{

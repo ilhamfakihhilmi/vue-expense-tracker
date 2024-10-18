@@ -51,6 +51,7 @@ export default {
 .popup-content {
   background-color: white;
   padding: 40px;
+  margin: 25px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
