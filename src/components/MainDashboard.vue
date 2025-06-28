@@ -1,0 +1,1670 @@
+<template>
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <!-- Safe Area Container -->
+        <div class="w-full h-full px-2 sm:px-4 lg:px-6 xl:px-8 py-4 sm:py-6">
+            <div class="max-w-full mx-auto space-y-4 sm:space-y-6 lg:space-y-8 h-full">
+                <!-- Header -->
+                <header
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div class="flex-1">
+                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Dasbor</h1>
+                        <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">{{
+                            formatDate(selectedDate) }}</p>
+                    </div>
+
+                    <div class="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+                        <!-- Date Picker -->
+                        <input type="date" v-model="selectedDate"
+                            class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white" />
+
+                        <!-- Theme Toggle -->
+                        <button @click="toggleTheme"
+                            class="p-2 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-all flex-shrink-0">
+                            <span v-if="isDarkMode" class="text-xl sm:text-2xl">🌞</span>
+                            <span v-else class="text-xl sm:text-2xl">🌜</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Top Cards Row - Statistik Keuangan -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+                    <!-- Saldo Card -->
+                    <div
+                        class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white relative overflow-hidden min-h-[120px] sm:min-h-[140px]">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-8 -translate-x-8">
+                        </div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-3 sm:mb-4">
+                                <h3 class="text-base sm:text-lg font-semibold">Total Saldo</h3>
+                                <div class="p-1.5 sm:p-2 bg-white/20 rounded-lg">
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="text-xl sm:text-3xl font-bold mb-1 sm:mb-2"
+                                :class="total >= 0 ? 'text-white' : 'text-red-200'">
+                                {{ formatCurrency(total) }}
+                            </div>
+                            <p class="text-blue-100 text-xs sm:text-sm">{{ formatDate(selectedDate) }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Pemasukan Card -->
+                    <div
+                        class="bg-gradient-to-br from-green-600 via-green-700 to-emerald-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white relative overflow-hidden min-h-[120px] sm:min-h-[140px]">
+                        <div
+                            class="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-white/10 rounded-full -translate-y-4 sm:-translate-y-8 translate-x-4 sm:translate-x-8">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-white/10 rounded-full translate-y-4 sm:translate-y-8 -translate-x-4 sm:-translate-x-8">
+                        </div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-3 sm:mb-4">
+                                <h3 class="text-base sm:text-lg font-semibold">Pemasukan</h3>
+                                <div class="p-1.5 sm:p-2 bg-white/20 rounded-lg">
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">
+                                +{{ formatCurrency(parseFloat(income)) }}
+                            </div>
+                            <p class="text-green-100 text-xs sm:text-sm">Hari ini</p>
+                        </div>
+                    </div>
+
+                    <!-- Pengeluaran Card -->
+                    <div
+                        class="bg-gradient-to-br from-red-600 via-red-700 to-rose-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white relative overflow-hidden min-h-[120px] sm:min-h-[140px]">
+                        <div
+                            class="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-white/10 rounded-full -translate-y-4 sm:-translate-y-8 translate-x-4 sm:translate-x-8">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-white/10 rounded-full translate-y-4 sm:translate-y-8 -translate-x-4 sm:-translate-x-8">
+                        </div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-3 sm:mb-4">
+                                <h3 class="text-base sm:text-lg font-semibold">Pengeluaran</h3>
+                                <div class="p-1.5 sm:p-2 bg-white/20 rounded-lg">
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">
+                                {{ formatCurrency(Math.abs(parseFloat(expenses))) }}
+                            </div>
+                            <p class="text-red-100 text-xs sm:text-sm">Hari ini</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Target Cards Section - Full Width -->
+                <div class="space-y-4 mb-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Target Keuangan</h2>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ Object.keys(targets).length }}
+                                target aktif</span>
+                        </div>
+
+                        <!-- Button untuk toggle tampilan semua target -->
+                        <div v-if="Object.keys(targets).length > 3" class="flex items-center gap-2">
+                            <button @click="toggleShowAllTargets"
+                                class="px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200"
+                                :class="showAllTargets
+                                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'">
+                                <span v-if="showAllTargets" class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                    Tampilkan Sedikit
+                                </span>
+                                <span v-else class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>
+                                    Tampilkan Semua
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="target-cards-grid">
+                        <!-- Dynamic Target Cards -->
+                        <div v-for="([targetId, target]) in displayedTargets" :key="targetId"
+                            class="target-card-content group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border dark:border-gray-700 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out relative overflow-hidden min-h-[240px] w-full"
+                            @click="openTargetModal(targetId)">
+
+                            <!-- Background Pattern -->
+                            <div
+                                class="absolute top-0 right-0 w-20 h-20 opacity-5 transform rotate-12 translate-x-6 -translate-y-6">
+                                <svg class="w-full h-full" :class="getTargetIconClass(targetId)" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path :d="getTargetIconPath(targetId)"></path>
+                                </svg>
+                            </div>
+
+                            <!-- Header -->
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="p-2.5 rounded-xl" :class="getTargetBgClass(targetId)">
+                                        <svg class="w-5 h-5" :class="getTargetIconClass(targetId)" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                :d="getTargetIconPath(targetId)"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-2 h-2 rounded-full" :class="getTargetColorClass(targetId)">
+                                            </div>
+                                            <span
+                                                class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                                {{ target.category || 'Target' }}
+                                            </span>
+                                        </div>
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mt-1 line-clamp-1">
+                                            {{ target.name }}
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <!-- Delete Button -->
+                                <button @click.stop="deleteTarget(targetId)"
+                                    class="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Progress Section -->
+                            <div class="space-y-3">
+                                <!-- Amount Display -->
+                                <div class="flex items-center justify-between">
+                                    <div class="text-left">
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Saat Ini
+                                        </div>
+                                        <div class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ formatCurrency(target.current) }}
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Target</div>
+                                        <div class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ formatCurrency(target.amount) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Progress Bar -->
+                                <div class="space-y-2">
+                                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                        <div class="h-2.5 rounded-full transition-all duration-500 ease-out"
+                                            :class="getTargetProgressClass(targetId)"
+                                            :style="{ width: Math.min(getTargetPercentage(targetId), 100) + '%' }">
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-semibold"
+                                            :class="getTargetPercentage(targetId) >= 100 ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'">
+                                            {{ getTargetPercentage(targetId) }}%
+                                        </span>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            {{ target.progressText || 'tercapai' }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div v-if="target.description"
+                                    class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                                        {{ target.description }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add New Target Card -->
+                        <div v-if="showAllTargets || Object.keys(targets).length < 3" @click="openNewTargetModal"
+                            class="target-card-content group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer hover:shadow-lg hover:-translate-y-1 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 ease-out min-h-[240px] w-full">
+                            <div class="flex flex-col items-center justify-center h-full text-center">
+                                <div
+                                    class="p-4 bg-gray-50 dark:bg-gray-700 rounded-full mb-4 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors">
+                                    <svg class="w-8 h-8 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                    Tambah Target Baru
+                                </h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Klik untuk membuat target
+                                    keuangan baru</p>
+                            </div>
+                        </div>
+
+                        <!-- Card informasi jika ada target tersembunyi -->
+                        <div v-if="!showAllTargets && Object.keys(targets).length > 3" @click="toggleShowAllTargets"
+                            class="target-card-content group bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-800 rounded-2xl p-6 shadow-sm border border-blue-200 dark:border-gray-600 cursor-pointer hover:shadow-lg hover:-translate-y-1 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 ease-out min-h-[240px] w-full">
+                            <div class="flex flex-col items-center justify-center h-full text-center">
+                                <div
+                                    class="p-4 bg-blue-100 dark:bg-blue-900/50 rounded-full mb-4 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/70 transition-colors">
+                                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-lg font-semibold text-blue-700 dark:text-blue-300 mb-2 group-hover:text-blue-800 dark:group-hover:text-blue-200 transition-colors">
+                                    {{ Object.keys(targets).length - 3 }} Target Lainnya
+                                </h3>
+                                <p class="text-sm text-blue-600 dark:text-blue-400">Klik untuk melihat semua target
+                                    keuangan</p>
+                            </div>
+                        </div>
+
+                        <!-- Placeholder cards untuk mengisi grid agar selalu 4 kolom -->
+                        <div v-for="n in placeholderCards" :key="`placeholder-${n}`"
+                            class="target-card-content bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 opacity-50 min-h-[240px] w-full">
+                            <div class="flex flex-col items-center justify-center h-full text-center">
+                                <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-full mb-4">
+                                    <svg class="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" stroke-width="1">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-400 dark:text-gray-500 mb-2">
+                                    Slot Kosong
+                                </h3>
+                                <p class="text-sm text-gray-400 dark:text-gray-500">Tambahkan target baru</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-6 lg:gap-8">
+                    <!-- Left Section: Accounts, Transaction Form, and History -->
+                    <div class="xl:col-span-8 space-y-4 sm:space-y-6">
+                        <!-- Accounts and Receivables Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                            <!-- Accounts Card -->
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border dark:border-gray-700">
+                                <div class="flex items-center justify-between mb-3 sm:mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-600 rounded-full mr-2 sm:mr-3">
+                                        </div>
+                                        <span
+                                            class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">Rekening</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center bg-blue-100 dark:bg-blue-900 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1">
+                                        <span class="text-blue-600 dark:text-blue-400 text-xs font-medium">CT</span>
+                                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-yellow-400 rounded-full ml-1"></div>
+                                    </div>
+                                </div>
+                                <div class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">{{
+                                    formatCurrency(parseFloat(income)) }}</div>
+                                <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Saldo</div>
+                            </div>
+
+                            <!-- Receivables Card -->
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border dark:border-gray-700">
+                                <div class="flex items-center justify-between mb-3 sm:mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-500 rounded-full mr-2 sm:mr-3">
+                                        </div>
+                                        <span class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">Piutang</span>
+                                    </div>
+                                    <div class="p-1.5 sm:p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">{{
+                                    formatCurrency(Math.abs(parseFloat(expenses))) }}</div>
+                                <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Saldo</div>
+                            </div>
+                        </div>
+
+                        <!-- Transaction History -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border dark:border-gray-700">
+                            <div
+                                class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Riwayat
+                                    Transaksi</h3>
+                                <div class="flex gap-2">
+                                    <button @click="showAll = false"
+                                        :class="!showAll ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
+                                        class="px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition-colors">
+                                        Hari Ini
+                                    </button>
+                                    <button @click="showAll = true"
+                                        :class="showAll ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
+                                        class="px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition-colors">
+                                        Semua
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Daily Summary -->
+                            <div v-if="!showAll && transactionsByDay.length > 0" class="mb-4 sm:mb-6">
+                                <h4 class="text-sm sm:text-md font-semibold text-gray-900 dark:text-white mb-3">
+                                    Ringkasan Harian</h4>
+                                <div class="space-y-2 max-h-32 sm:max-h-40 overflow-y-auto">
+                                    <div v-for="day in transactionsByDay.slice(0, 5)" :key="day.date"
+                                        class="flex justify-between items-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                                        @click="viewTransactionsForDate(day.date)">
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
+                                                {{
+                                                    formatDateForDisplay(day.date) }}</div>
+                                            <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{{
+                                                day.count }}
+                                                transaksi</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="font-semibold text-sm sm:text-base"
+                                                :class="day.total >= 0 ? 'text-green-600' : 'text-red-600'">
+                                                {{ formatCurrency(day.total) }}
+                                            </div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">
+                                                +{{ formatCurrency(day.income) }} / {{
+                                                    formatCurrency(Math.abs(day.expenses)) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Monthly Summary -->
+                            <div v-if="transactionsByMonth.length > 0" class="mb-4 sm:mb-6">
+                                <h4 class="text-sm sm:text-md font-semibold text-gray-900 dark:text-white mb-3">
+                                    Ringkasan Bulanan</h4>
+                                <div class="space-y-2 max-h-48 sm:max-h-60 overflow-y-auto">
+                                    <div v-for="month in transactionsByMonth.slice(0, 6)" :key="month.month"
+                                        class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <div
+                                                    class="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
+                                                    {{
+                                                        month.monthName }}</div>
+                                                <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{{
+                                                    month.transactionCount }} transaksi</div>
+                                            </div>
+                                            <button @click="exportMonthlyData(month.month)"
+                                                class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-xs sm:text-sm font-medium">
+                                                Export
+                                            </button>
+                                        </div>
+                                        <div class="grid grid-cols-3 gap-2 text-xs sm:text-sm">
+                                            <div>
+                                                <span class="text-gray-600 dark:text-gray-400">Masuk:</span>
+                                                <div class="font-semibold text-green-600">+{{
+                                                    formatCurrency(month.totalIncome) }}</div>
+                                            </div>
+                                            <div>
+                                                <span class="text-gray-600 dark:text-gray-400">Keluar:</span>
+                                                <div class="font-semibold text-red-600">{{
+                                                    formatCurrency(month.totalExpenses) }}</div>
+                                            </div>
+                                            <div>
+                                                <span class="text-gray-600 dark:text-gray-400">Bersih:</span>
+                                                <div class="font-semibold"
+                                                    :class="month.netAmount >= 0 ? 'text-green-600' : 'text-red-600'">
+                                                    {{ formatCurrency(month.netAmount) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div
+                                class="flex flex-col sm:flex-row gap-2 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
+                                <button @click="deleteAllTransactions"
+                                    class="px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-xs sm:text-sm font-medium">
+                                    Hapus Semua Hari Ini
+                                </button>
+                                <button @click="viewAllTransactions"
+                                    class="px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm font-medium">
+                                    Lihat Semua
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Section: Add Transaction Form and Quick Stats -->
+                    <div class="xl:col-span-4 space-y-4 sm:space-y-6">
+                        <!-- Add Transaction Form -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border dark:border-gray-700">
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
+                                Tambah Transaksi Baru</h3>
+                            <AddTransaction @transactionSubmitted="handleTransactionSubmitted" />
+                        </div>
+
+                        <!-- Transaction List -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border dark:border-gray-700 overflow-hidden">
+                            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Transaksi
+                                    Terbaru</h3>
+                            </div>
+                            <TransactionList :transactions="filteredTransactions"
+                                @transactionDeleted="handleTransactionDeleted" compact />
+                        </div>
+
+                        <!-- Monthly Summary -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border dark:border-gray-700">
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
+                                Bulan Ini</h3>
+                            <div class="space-y-3 sm:space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600 dark:text-gray-400 text-sm sm:text-base">Pemasukan</span>
+                                    <span class="font-semibold text-green-600 text-sm sm:text-base">+{{
+                                        formatCurrency(monthlyIncome) }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span
+                                        class="text-gray-600 dark:text-gray-400 text-sm sm:text-base">Pengeluaran</span>
+                                    <span class="font-semibold text-red-600 text-sm sm:text-base">{{
+                                        formatCurrency(monthlyExpenses) }}</span>
+                                </div>
+                                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 sm:pt-4">
+                                    <div class="flex justify-between items-center">
+                                        <span
+                                            class="font-medium text-gray-900 dark:text-white text-sm sm:text-base">Bersih</span>
+                                        <span class="font-bold text-base sm:text-lg"
+                                            :class="monthlyNet >= 0 ? 'text-green-600' : 'text-red-600'">
+                                            {{ formatCurrency(monthlyNet) }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Mengatur Target -->
+    <!-- Target Modal -->
+    <div v-if="showTargetModal"
+        class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-start sm:items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto"
+        @click.self="closeTargetModal">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-lg mx-auto my-2 sm:my-8 transform transition-all duration-300 ease-out max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scroll modal-container">
+            <!-- Modal Header -->
+            <div
+                class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 modal-header">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                            {{ isNewTarget ? 'Buat Target Baru' : 'Atur Target' }}
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ isNewTarget ? 'Tetapkan target keuangan baru' : 'Perbarui target yang sudah ada' }}
+                        </p>
+                    </div>
+                </div>
+                <button @click="closeTargetModal"
+                    class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <form @submit.prevent="saveTarget" class="p-4 sm:p-6 space-y-4 sm:space-y-6 modal-body">
+                <!-- Target Name -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Nama Target <span class="text-red-500">*</span>
+                    </label>
+                    <input v-model="targetForm.name" type="text" maxlength="50"
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all"
+                        placeholder="Contoh: Tabungan Liburan Bali" required />
+                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <span>Berikan nama yang jelas dan mudah diingat</span>
+                        <span>{{ (targetForm.name || '').length }}/50</span>
+                    </div>
+                </div>
+
+                <!-- Target Category -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Kategori Target
+                    </label>
+                    <select v-model="targetForm.category"
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all">
+                        <option value="">Pilih kategori</option>
+                        <option value="Tabungan">💰 Tabungan</option>
+                        <option value="Pinjaman">🏦 Pinjaman</option>
+                        <option value="Investasi">📈 Investasi</option>
+                        <option value="Kebutuhan">🏠 Kebutuhan</option>
+                        <option value="Liburan">✈️ Liburan</option>
+                        <option value="Pendidikan">🎓 Pendidikan</option>
+                        <option value="Lainnya">📋 Lainnya</option>
+                    </select>
+                </div>
+
+                <!-- Amount Fields Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 modal-form-grid">
+                    <!-- Target Amount -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Jumlah Target <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute currency-prefix top-1/2 transform -translate-y-1/2">Rp</span>
+                            <input v-model.number="targetForm.amount" type="number" min="1000" step="1000"
+                                class="w-full currency-input pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all"
+                                placeholder="1000000" required />
+                        </div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            Minimum Rp 1.000, kelipatan Rp 1.000
+                        </div>
+                    </div>
+
+                    <!-- Current Amount -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Jumlah Saat Ini
+                        </label>
+                        <div class="relative">
+                            <span class="absolute currency-prefix top-1/2 transform -translate-y-1/2">Rp</span>
+                            <input v-model.number="targetForm.current" type="number" min="0" step="1000"
+                                class="w-full currency-input pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all"
+                                placeholder="0" />
+                        </div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            Kelipatan Rp 1.000
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Keterangan <span class="text-gray-400">(Opsional)</span>
+                    </label>
+                    <textarea v-model="targetForm.description" rows="3" maxlength="200"
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all resize-none"
+                        placeholder="Contoh: Target liburan ke Bali bulan Desember 2024"></textarea>
+                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <span>Tambahkan detail atau catatan penting</span>
+                        <span>{{ (targetForm.description || '').length }}/200</span>
+                    </div>
+                </div>
+
+                <!-- Progress Preview -->
+                <div v-if="targetForm.amount > 0"
+                    class="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-800 rounded-xl border border-blue-100 dark:border-gray-600">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Preview Progress</span>
+                        </div>
+                        <span class="text-lg font-bold text-blue-600 dark:text-blue-400">
+                            {{ Math.round(((targetForm.current || 0) / (targetForm.amount || 1)) * 100) }}%
+                        </span>
+                    </div>
+
+                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-3 mb-3">
+                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-500 ease-out"
+                            :style="{ width: Math.min(((targetForm.current || 0) / (targetForm.amount || 1)) * 100, 100) + '%' }">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center text-sm">
+                        <div class="text-gray-600 dark:text-gray-400">
+                            <span class="font-medium">Saat ini:</span> {{ formatCurrency(targetForm.current || 0) }}
+                        </div>
+                        <div class="text-gray-600 dark:text-gray-400">
+                            <span class="font-medium">Target:</span> {{ formatCurrency(targetForm.amount || 0) }}
+                        </div>
+                    </div>
+
+                    <div v-if="targetForm.amount > (targetForm.current || 0)"
+                        class="mt-3 pt-3 border-t border-blue-200 dark:border-gray-600">
+                        <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+                            Kurang <span class="font-semibold text-blue-600 dark:text-blue-400">{{
+                                formatCurrency((targetForm.amount || 0) - (targetForm.current || 0)) }}</span> lagi
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3 pt-2">
+                    <button type="button" @click="closeTargetModal"
+                        class="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                        Batal
+                    </button>
+                    <button v-if="!isNewTarget" type="button" @click="confirmDeleteTarget"
+                        class="px-6 py-3 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-all shadow-lg hover:shadow-red-200 dark:hover:shadow-red-900">
+                        Hapus
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-blue-200 dark:hover:shadow-blue-900">
+                        {{ isNewTarget ? 'Buat Target' : 'Simpan Target' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useToast } from 'vue-toastification'
+import { useTransactions } from '../composables/useTransactions'
+import AddTransaction from './AddTransaction.vue'
+import TransactionList from './TransactionList.vue'
+
+const toast = useToast()
+const {
+    selectedDate,
+    transactions,
+    total,
+    income,
+    expenses,
+    addTransaction,
+    deleteTransaction,
+    deleteAllTransactions,
+    transactionsByMonth,
+    transactionsByDay,
+    viewTransactionsForDate,
+    viewAllTransactions,
+    showAll,
+    filteredTransactions,
+    formatDateForDisplay,
+    exportMonthlyData,
+} = useTransactions(toast)
+
+// Theme management
+const isDarkMode = ref(false)
+
+// Target management
+const showTargetModal = ref(false)
+const showAllTargets = ref(false) // State untuk menampilkan semua target
+const currentTarget = ref({})
+const isNewTarget = ref(false)
+const targetForm = ref({
+    name: '',
+    category: '',
+    amount: 0,
+    current: 0,
+    description: ''
+})
+
+// Targets data with enhanced structure
+const targets = ref({
+    // Target default akan dimuat dari localStorage atau kosong jika tidak ada
+})
+
+// Computed property untuk membatasi target yang ditampilkan
+const displayedTargets = computed(() => {
+    const allTargets = Object.entries(targets.value)
+
+    if (showAllTargets.value) {
+        return allTargets
+    }
+
+    // Batasi maksimal 3 target (karena 1 slot untuk card tambah)
+    return allTargets.slice(0, 3)
+})
+
+// Computed property untuk menghitung jumlah card placeholder yang dibutuhkan
+const placeholderCards = computed(() => {
+    // Jika menampilkan semua target, tidak perlu placeholder
+    if (showAllTargets.value) return 0
+
+    let totalCards = displayedTargets.value.length
+
+    // Tambahkan card tambah jika slot masih tersedia
+    if (Object.keys(targets.value).length < 3) {
+        totalCards += 1
+    }
+
+    // Tambahkan card info jika ada target tersembunyi
+    if (Object.keys(targets.value).length > 3) {
+        totalCards += 1
+    }
+
+    // Hitung jumlah placeholder yang diperlukan untuk mengisi 4 kolom
+    const maxColumns = 4
+    if (totalCards >= maxColumns) return 0
+
+    return maxColumns - totalCards
+})
+
+// Function untuk toggle tampilan semua target
+const toggleShowAllTargets = () => {
+    showAllTargets.value = !showAllTargets.value
+}
+
+const toggleTheme = () => {
+    isDarkMode.value = !isDarkMode.value
+    if (isDarkMode.value) {
+        localStorage.setItem('theme', 'dark')
+        document.documentElement.classList.add('dark')
+    } else {
+        localStorage.removeItem('theme')
+        document.documentElement.classList.remove('dark')
+    }
+}
+
+// Target management functions
+const openTargetModal = (targetType) => {
+    const target = targets.value[targetType]
+    if (target) {
+        isNewTarget.value = false
+        currentTarget.value = { type: targetType, ...target }
+        targetForm.value = {
+            name: target.name,
+            category: target.category || '',
+            amount: target.amount,
+            current: target.current,
+            description: target.description || ''
+        }
+    }
+    showTargetModal.value = true
+}
+
+const openNewTargetModal = () => {
+    isNewTarget.value = true
+    currentTarget.value = {}
+    targetForm.value = {
+        name: '',
+        category: '',
+        amount: 0,
+        current: 0,
+        description: ''
+    }
+    showTargetModal.value = true
+}
+
+const closeTargetModal = () => {
+    showTargetModal.value = false
+    isNewTarget.value = false
+    currentTarget.value = {}
+
+    // Reset form dengan nilai default yang aman
+    targetForm.value = {
+        name: '',
+        category: '',
+        amount: 0,
+        current: 0,
+        description: ''
+    }
+}
+
+const saveTarget = () => {
+    try {
+        // Validate form data
+        if (!targetForm.value.name || !targetForm.value.name.trim()) {
+            toast.error('Nama target harus diisi!')
+            return
+        }
+
+        if (!targetForm.value.amount || targetForm.value.amount < 1000) {
+            toast.error('Jumlah target minimal Rp 1.000!')
+            return
+        }
+
+        if (targetForm.value.current < 0) {
+            toast.error('Jumlah saat ini tidak boleh negatif!')
+            return
+        }
+
+        if (targetForm.value.current > targetForm.value.amount) {
+            toast.warning('Jumlah saat ini melebihi target!')
+        }
+
+        if (isNewTarget.value) {
+            // Create new target
+            const targetId = 'target_' + Date.now()
+            const category = targetForm.value.category || 'Lainnya'
+
+            targets.value[targetId] = {
+                name: targetForm.value.name.trim(),
+                category: category,
+                amount: Number(targetForm.value.amount),
+                current: Number(targetForm.value.current) || 0,
+                description: targetForm.value.description ? targetForm.value.description.trim() : '',
+                progressText: getProgressText(category),
+                color: getCategoryColor(category),
+                icon: getCategoryIcon(category)
+            }
+            toast.success(`Target ${targetForm.value.name} berhasil dibuat!`)
+        } else if (currentTarget.value.type) {
+            // Update existing target
+            const category = targetForm.value.category || targets.value[currentTarget.value.type].category
+
+            targets.value[currentTarget.value.type] = {
+                ...targets.value[currentTarget.value.type],
+                name: targetForm.value.name.trim(),
+                category: category,
+                amount: Number(targetForm.value.amount),
+                current: Number(targetForm.value.current) || 0,
+                description: targetForm.value.description ? targetForm.value.description.trim() : '',
+                progressText: getProgressText(category),
+                color: getCategoryColor(category),
+                icon: getCategoryIcon(category)
+            }
+            toast.success(`Target ${targetForm.value.name} berhasil disimpan!`)
+        }
+
+        // Save to localStorage
+        localStorage.setItem('financialTargets', JSON.stringify(targets.value))
+        closeTargetModal()
+
+    } catch (error) {
+        console.error('Error saving target:', error)
+        toast.error('Terjadi kesalahan saat menyimpan target. Silakan coba lagi.')
+    }
+}
+
+const confirmDeleteTarget = () => {
+    if (confirm(`Apakah Anda yakin ingin menghapus target "${currentTarget.value.name}"?`)) {
+        deleteTarget(currentTarget.value.type)
+    }
+}
+
+const deleteTarget = (targetId) => {
+    try {
+        if (!targetId || !targets.value[targetId]) {
+            toast.error('Target tidak ditemukan!')
+            return
+        }
+
+        const targetName = targets.value[targetId].name
+        delete targets.value[targetId]
+
+        // Save to localStorage
+        localStorage.setItem('financialTargets', JSON.stringify(targets.value))
+
+        toast.success(`Target ${targetName} berhasil dihapus!`)
+        closeTargetModal()
+
+    } catch (error) {
+        console.error('Error deleting target:', error)
+        toast.error('Terjadi kesalahan saat menghapus target. Silakan coba lagi.')
+    }
+}
+
+const isDefaultTarget = (targetId) => {
+    // Semua target sekarang bisa dihapus
+    return false
+}
+
+const getTargetPercentage = (targetType) => {
+    const target = targets.value[targetType]
+    if (!target || !target.amount || target.amount === 0) return 0
+
+    const current = target.current || 0
+    const amount = target.amount || 1
+
+    return Math.round((current / amount) * 100)
+}
+
+// Helper functions for styling and categorization
+const getProgressText = (category) => {
+    const progressTexts = {
+        'Tabungan': 'telah ditabung',
+        'Pinjaman': 'telah dibayar',
+        'Investasi': 'telah diinvestasi',
+        'Kebutuhan': 'telah terkumpul',
+        'Liburan': 'telah ditabung',
+        'Pendidikan': 'telah ditabung',
+        'Lainnya': 'tercapai'
+    }
+    return progressTexts[category] || 'tercapai'
+}
+
+const getCategoryColor = (category) => {
+    const colors = {
+        'Tabungan': 'purple',
+        'Pinjaman': 'green',
+        'Investasi': 'blue',
+        'Kebutuhan': 'orange',
+        'Liburan': 'teal',
+        'Pendidikan': 'indigo',
+        'Lainnya': 'gray'
+    }
+    return colors[category] || 'gray'
+}
+
+const getCategoryIcon = (category) => {
+    const icons = {
+        'Tabungan': 'home',
+        'Pinjaman': 'clock',
+        'Investasi': 'trending-up',
+        'Kebutuhan': 'shopping-bag',
+        'Liburan': 'airplane',
+        'Pendidikan': 'academic-cap',
+        'Lainnya': 'target'
+    }
+    return icons[category] || 'target'
+}
+
+const getTargetColorClass = (targetId) => {
+    const target = targets.value[targetId]
+    if (!target) return 'bg-gray-400'
+
+    const colorClasses = {
+        'green': 'bg-green-400',
+        'purple': 'bg-purple-400',
+        'blue': 'bg-blue-400',
+        'orange': 'bg-orange-400',
+        'teal': 'bg-teal-400',
+        'indigo': 'bg-indigo-400',
+        'gray': 'bg-gray-400'
+    }
+    return colorClasses[target.color] || 'bg-gray-400'
+}
+
+const getTargetBgClass = (targetId) => {
+    const target = targets.value[targetId]
+    if (!target) return 'bg-gray-100 dark:bg-gray-700'
+
+    const bgClasses = {
+        'green': 'bg-green-100 dark:bg-green-900',
+        'purple': 'bg-purple-100 dark:bg-purple-900',
+        'blue': 'bg-blue-100 dark:bg-blue-900',
+        'orange': 'bg-orange-100 dark:bg-orange-900',
+        'teal': 'bg-teal-100 dark:bg-teal-900',
+        'indigo': 'bg-indigo-100 dark:bg-indigo-900',
+        'gray': 'bg-gray-100 dark:bg-gray-700'
+    }
+    return bgClasses[target.color] || 'bg-gray-100 dark:bg-gray-700'
+}
+
+const getTargetIconClass = (targetId) => {
+    const target = targets.value[targetId]
+    if (!target) return 'text-gray-600 dark:text-gray-400'
+
+    const iconClasses = {
+        'green': 'text-green-600 dark:text-green-400',
+        'purple': 'text-purple-600 dark:text-purple-400',
+        'blue': 'text-blue-600 dark:text-blue-400',
+        'orange': 'text-orange-600 dark:text-orange-400',
+        'teal': 'text-teal-600 dark:text-teal-400',
+        'indigo': 'text-indigo-600 dark:text-indigo-400',
+        'gray': 'text-gray-600 dark:text-gray-400'
+    }
+    return iconClasses[target.color] || 'text-gray-600 dark:text-gray-400'
+}
+
+const getTargetProgressClass = (targetId) => {
+    const target = targets.value[targetId]
+    if (!target) return 'bg-gray-400'
+
+    const progressClasses = {
+        'green': 'bg-green-400',
+        'purple': 'bg-purple-400',
+        'blue': 'bg-blue-400',
+        'orange': 'bg-orange-400',
+        'teal': 'bg-teal-400',
+        'indigo': 'bg-indigo-400',
+        'gray': 'bg-gray-400'
+    }
+    return progressClasses[target.color] || 'bg-gray-400'
+}
+
+const getTargetIconPath = (targetId) => {
+    const target = targets.value[targetId]
+    if (!target) return 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
+
+    const iconPaths = {
+        'clock': 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+        'home': 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z',
+        'trending-up': 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
+        'shopping-bag': 'M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z',
+        'airplane': 'M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z',
+        'academic-cap': 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z',
+        'target': 'M12 2l3.09 6.26L22 9l-5.91 3.74L18 22l-6-4-6 4 1.91-9.26L2 9l6.91-.74L12 2z'
+    }
+    return iconPaths[target.icon] || iconPaths['target']
+}
+
+// Load targets from localStorage
+const loadTargets = () => {
+    try {
+        const savedTargets = localStorage.getItem('financialTargets')
+        if (savedTargets) {
+            const parsedTargets = JSON.parse(savedTargets)
+            // Validate the loaded data
+            if (typeof parsedTargets === 'object' && parsedTargets !== null) {
+                targets.value = parsedTargets // Hanya gunakan data dari localStorage
+            }
+        } else {
+            // Jika tidak ada data di localStorage, buat target default sebagai contoh
+            const defaultTargets = {
+                carLoan: {
+                    name: 'Pinjaman Mobil',
+                    category: 'Pinjaman',
+                    amount: 5000000,
+                    current: 1350000,
+                    description: 'Target pelunasan pinjaman mobil',
+                    progressText: 'telah dibayar',
+                    color: 'green',
+                    icon: 'clock'
+                },
+                homeSavings: {
+                    name: 'Tabungan Rumah',
+                    category: 'Tabungan',
+                    amount: 5000000,
+                    current: 1250000,
+                    description: 'Tabungan untuk membeli rumah',
+                    progressText: 'telah ditabung',
+                    color: 'purple',
+                    icon: 'home'
+                }
+            }
+            targets.value = defaultTargets
+            // Simpan target default ke localStorage
+            localStorage.setItem('financialTargets', JSON.stringify(defaultTargets))
+        }
+    } catch (error) {
+        console.error('Error loading targets from localStorage:', error)
+        // Jika ada error, mulai dengan target kosong
+        targets.value = {}
+        toast.warning('Data target tidak dapat dimuat, memulai dengan data kosong.')
+    }
+}
+
+// Initialize theme
+onMounted(() => {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+        isDarkMode.value = savedTheme === 'dark'
+        if (isDarkMode.value) {
+            document.documentElement.classList.add('dark')
+        }
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        isDarkMode.value = true
+        document.documentElement.classList.add('dark')
+    }
+
+    // Load targets from localStorage
+    loadTargets()
+})
+
+// Monthly computeds
+const monthlyIncome = computed(() => {
+    const currentMonth = new Date().toISOString().substring(0, 7)
+    const monthData = transactionsByMonth.value.find(m => m.month === currentMonth)
+    return monthData ? monthData.totalIncome : 0
+})
+
+const monthlyExpenses = computed(() => {
+    const currentMonth = new Date().toISOString().substring(0, 7)
+    const monthData = transactionsByMonth.value.find(m => m.month === currentMonth)
+    return monthData ? monthData.totalExpenses : 0
+})
+
+const monthlyNet = computed(() => monthlyIncome.value + monthlyExpenses.value)
+
+// Handlers
+const handleTransactionSubmitted = (transactionData) => {
+    addTransaction(transactionData)
+}
+
+const handleTransactionDeleted = (id) => {
+    deleteTransaction(id)
+}
+
+// Format functions
+const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(amount)
+}
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    })
+}
+</script>
+
+<style scoped>
+/* Prevent top content from being cut off */
+.min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Ensure proper viewport on mobile */
+@media (max-width: 640px) {
+    .min-h-screen {
+        padding-top: max(env(safe-area-inset-top, 0px), 0.5rem);
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #6b7280;
+}
+
+/* Prevent overflow and ensure proper spacing */
+.max-w-full {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+}
+
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+/* Better responsive grid layouts */
+@media (max-width: 640px) {
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+
+    /* Ensure cards stack properly on mobile */
+    .sm\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .lg\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .xl\:grid-cols-12 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+    .sm\:grid-cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lg\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1280px) {
+    .xl\:grid-cols-12 {
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+    .xl\:col-span-8 {
+        grid-column: span 8 / span 8;
+    }
+
+    .xl\:col-span-4 {
+        grid-column: span 4 / span 4;
+    }
+}
+
+/* Better responsive behavior for header */
+@media (max-width: 640px) {
+    header {
+        padding-bottom: 0.75rem;
+    }
+
+    .text-2xl {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    .sm\:text-3xl {
+        font-size: 1.75rem;
+        line-height: 2.25rem;
+    }
+}
+
+/* Modal backdrop blur effect */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+}
+
+/* Modal Scroll Styles */
+.modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.modal-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 10px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.7);
+}
+
+/* Currency Input Styling */
+.currency-input {
+    padding-left: 2.5rem;
+    /* 40px */
+}
+
+.currency-prefix {
+    left: 0.75rem;
+    /* 12px */
+    font-weight: 500;
+    color: #6b7280;
+    /* gray-500 */
+    font-size: 0.875rem;
+    /* 14px */
+    pointer-events: none;
+    user-select: none;
+}
+
+.dark .currency-prefix {
+    color: #9ca3af;
+    /* gray-400 */
+}
+
+/* Smooth modal transitions */
+.modal-enter-active,
+.modal-leave-active {
+    transition: all 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+/* Card hover animations */
+.group:hover .group-hover\:opacity-100 {
+    opacity: 1;
+}
+
+/* Custom button hover effects */
+.shadow-blue-200 {
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06);
+}
+
+.shadow-red-200 {
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1), 0 2px 4px -1px rgba(239, 68, 68, 0.06);
+}
+
+.dark .shadow-blue-900 {
+    box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.3), 0 2px 4px -1px rgba(30, 64, 175, 0.2);
+}
+
+.dark .shadow-red-900 {
+    box-shadow: 0 4px 6px -1px rgba(153, 27, 27, 0.3), 0 2px 4px -1px rgba(153, 27, 27, 0.2);
+}
+
+/* Modal responsiveness */
+@media (max-width: 640px) {
+    .modal-container {
+        max-height: 95vh;
+        margin: 0.5rem;
+        border-radius: 1rem;
+    }
+
+    .modal-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .modal-header .flex:first-child {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .modal-body {
+        padding: 1rem;
+        padding-top: 0;
+    }
+
+    .modal-form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+    }
+
+    /* Adjust input sizes for mobile */
+    .modal-body input,
+    .modal-body select,
+    .modal-body textarea {
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    /* Currency input responsive adjustments */
+    .modal-body .currency-input {
+        padding-left: 2.25rem;
+        /* Slightly smaller on mobile */
+    }
+
+    .modal-body .currency-prefix {
+        left: 0.625rem;
+        /* Slightly closer to left on mobile */
+        font-size: 0.8125rem;
+        /* Slightly smaller font */
+    }
+
+    /* Adjust button spacing for mobile */
+    .modal-body .flex.gap-3 {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .modal-body .flex.gap-3 button {
+        width: 100%;
+    }
+}
+
+@media (max-height: 640px) {
+    .modal-container {
+        max-height: 95vh;
+        margin: 0.5rem auto;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .modal-body .space-y-4,
+    .modal-body .space-y-6 {
+        gap: 1rem;
+    }
+}
+
+/* Better modal scroll on small screens */
+@media (max-width: 640px) and (max-height: 800px) {
+    .modal-container {
+        max-height: 90vh;
+        margin: 0.5rem;
+    }
+}
+
+/* Very small screens (mobile landscape) */
+@media (max-width: 640px) and (max-height: 500px) {
+    .modal-container {
+        max-height: 95vh;
+        margin: 0.25rem;
+        border-radius: 0.75rem;
+    }
+
+    .modal-header {
+        padding: 0.75rem;
+    }
+
+    .modal-body {
+        padding: 0.75rem;
+        padding-top: 0.5rem;
+    }
+
+    .modal-body .space-y-4>*+*,
+    .modal-body .space-y-6>*+* {
+        margin-top: 0.75rem;
+    }
+
+    /* Reduce form field heights */
+    .modal-body input,
+    .modal-body select,
+    .modal-body textarea {
+        padding: 0.625rem;
+        min-height: auto;
+    }
+
+    /* Compact buttons */
+    .modal-body button {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    /* Compact progress preview */
+    .modal-body .bg-gradient-to-br {
+        padding: 0.75rem;
+    }
+}
+
+/* Target Cards Responsiveness */
+.target-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .target-cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .target-cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .target-cards-grid {
+        /* Gunakan grid-template-columns fixed untuk desktop agar selalu 4 kolom */
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1280px) {
+    .target-cards-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1536px) {
+    .target-cards-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        max-width: 100%;
+    }
+}
+
+/* Prevent card content overflow */
+.target-card-content {
+    width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Responsive text sizes */
+@media (max-width: 640px) {
+    .text-xl {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    .sm\:text-3xl {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+}
+
+/* Ensure full height utilization */
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container spacing adjustments */
+@media (max-width: 640px) {
+    .space-y-4> :not([hidden])~ :not([hidden]) {
+        margin-top: 1rem;
+    }
+
+    .sm\:space-y-6> :not([hidden])~ :not([hidden]) {
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width: 641px) {
+    .sm\:space-y-6> :not([hidden])~ :not([hidden]) {
+        margin-top: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .lg\:space-y-8> :not([hidden])~ :not([hidden]) {
+        margin-top: 2rem;
+    }
+}
+
+/* Card minimum heights for consistency */
+@media (max-width: 640px) {
+    .min-h-\[120px\] {
+        min-height: 100px;
+    }
+
+    .sm\:min-h-\[140px\] {
+        min-height: 120px;
+    }
+}
+
+/* Flexbox responsive adjustments */
+@media (max-width: 640px) {
+    .flex-col {
+        flex-direction: column;
+    }
+
+    .sm\:flex-row {
+        flex-direction: column;
+    }
+
+    .items-start {
+        align-items: flex-start;
+    }
+
+    .sm\:items-center {
+        align-items: flex-start;
+    }
+}
+
+@media (min-width: 641px) {
+    .sm\:flex-row {
+        flex-direction: row;
+    }
+
+    .sm\:items-center {
+        align-items: center;
+    }
+}
+</style>

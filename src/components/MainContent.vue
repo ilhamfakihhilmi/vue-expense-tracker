@@ -1,263 +1,272 @@
 <template>
-  <main :class="['w-[100%] md:w-[100%] lg:w-[100%] h-screen p-4 ', themeClass]">
-    <toggle class="flex justify-end">
-      <button
-        @click="toggleTheme"
-        class="absolute mt-4 p-2 bg-blue-500 text-white rounded-md"
-      >
-        <span v-if="isDayMode" class="text-lg"> 🌞 </span>
-        <span v-else class="text-lg"> 🌜 </span>
-      </button>
-    </toggle>
-
-    <layout1
-      :class="{
-        'bg-white': !isDarkMode,
-        'bg-gray-900': isDarkMode,
-      }"
-      class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] h-[full] lg:h-[95vh] box-border"
-    >
-    
-      <div
-        :class="{
-          'bg-red': !isDarkMode,
-          'bg-gray-900': isDarkMode,
-        }"
-        class="grid grid-cols-1 lg:grid-cols-2 gap-4 box-border h-full w-full"
-      >
-        <!-- hidden mobile -->
-        <div
-          class="grid lg:grid-rows-2 gap-4 w-[90%] md:w-[10%] lg:w-[100%] hidden md:grid"
-        >
-        
-          <!-- Set to h-full to match layout2 -->
-          <layouta
-            :class="{
-              'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md lg:w-[100%] md:[100%]  w-[100%]  p-3':
-                !isDarkMode,
-              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md  lg:w-[100%] md:[100%] w-[100%] p-3':
-                isDarkMode,
-            }"
-            class="col-span-1 relative h-full"
-          >
-            <div
-              class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="w-4 h-4 text-gray-600"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 3C10.343 3 9 4.343 9 6v1h6V6c0-1.657-1.343-3-3-3zm3 3h2a2 2 0 012 2v2.342a4.017 4.017 0 00-.416.198C16.62 10.087 15.907 10 15 10h-6c-.907 0-1.62.087-2.584.54A4.017 4.017 0 006 9.342V7a2 2 0 012-2h2V6c0-1.105.895-2 2-2s2 .895 2 2v1zm-7 6v1a5.99 5.99 0 00.4 2.292c.383.987.917 1.896 1.6 2.684.68.784 1.472 1.433 2.31 2.024A4.987 4.987 0 0112 21c.732 0 1.432-.168 2.048-.491a4.987 4.987 0 002.31-2.024c.683-.788 1.217-1.697 1.6-2.684A5.99 5.99 0 0015 15v-1H9z"
-                />
-              </svg>
+  <main :class="['min-h-screen transition-all duration-300', themeClass]">
+    <!-- Modern Header with Glassmorphism Effect -->
+    <div class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-white/20 dark:border-gray-700/50">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+          <!-- Brand & Date Selector -->
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-wallet text-white"></i>
+              </div>
+              <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Expense Tracker
+              </h1>
             </div>
-
-            <Header :textColor="textColor" />
-            <Balance :textColor="textColor" :total="total" />
-          </layouta>
-
-          <layoutb
-            :class="{
-              'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
-                !isDarkMode,
-              'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
-                isDarkMode,
-            }"
-            class="col-span-1 relative h-full"
-          >
-            <div
-              class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="w-4 h-4 text-gray-600"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 10h2v11H3V10zm6-4h2v15H9V6zm6 8h2v7h-2v-7zm6-5h2v12h-2V9z"
+            
+            <div class="flex items-center gap-3">
+              <div class="relative group">
+                <input
+                  type="date"
+                  v-model="selectedDate"
+                  class="px-4 py-2 rounded-xl border-2 transition-all duration-300 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 group-hover:border-blue-400"
+                  :class="isDarkMode 
+                    ? 'bg-gray-800/50 border-gray-600 text-white backdrop-blur-sm' 
+                    : 'bg-white/50 border-gray-300 text-gray-900 backdrop-blur-sm'"
                 />
-              </svg>
+                <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              <button
+                @click="goToToday"
+                class="px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg transform"
+                :class="isDarkMode 
+                  ? 'bg-gray-700/50 text-white hover:bg-gray-600/50 backdrop-blur-sm' 
+                  : 'bg-gray-100/50 text-gray-700 hover:bg-gray-200/50 backdrop-blur-sm'"
+              >
+                <i class="fas fa-calendar-day mr-2"></i>
+                Hari Ini
+              </button>
             </div>
-
-            <IncomeExpenses
-              :income="income"
-              :expenses="expenses"
-              :textColor="textColor"
-              class="flex flex-row items-center justify-center"
-            />
-          </layoutb>
-        </div>
-
-        <!-- hidden dekstpp -->
-        <layouta
-          :class="{
-            'bg-gradient-to-r from-[#6590FF] to-[#3a8cff] border-gray-200 shadow-xl border rounded-md lg:w-[100%] md:[100%] w-[100%] p-3':
-              !isDarkMode,
-            'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md lg:w-[100%] md:[100%] w-[100%] p-3':
-              isDarkMode,
-          }"
-          class="col-span-1 relative h-full block md:hidden"
-        >
-          <div
-            class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              class="w-4 h-4 text-gray-600"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 3C10.343 3 9 4.343 9 6v1h6V6c0-1.657-1.343-3-3-3zm3 3h2a2 2 0 012 2v2.342a4.017 4.017 0 00-.416.198C16.62 10.087 15.907 10 15 10h-6c-.907 0-1.62.087-2.584.54A4.017 4.017 0 006 9.342V7a2 2 0 012-2h2V6c0-1.105.895-2 2-2s2 .895 2 2v1zm-7 6v1a5.99 5.99 0 00.4 2.292c.383.987.917 1.896 1.6 2.684.68.784 1.472 1.433 2.31 2.024A4.987 4.987 0 0112 21c.732 0 1.432-.168 2.048-.491a4.987 4.987 0 002.31-2.024c.683-.788 1.217-1.697 1.6-2.684A5.99 5.99 0 0015 15v-1H9z"
-              />
-            </svg>
           </div>
 
-          <Header :textColor="textColor" />
-          <Balance :textColor="textColor" :total="total" />
-        </layouta>
-
-        <layoutb
-          :class="{
-            'bg-gradient-to-r from-[#FFC23F] to-[#f9c68e] border-gray-200 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
-              !isDarkMode,
-            'bg-gradient-to-r from-gray-600 to-gray-800 border-gray-700 shadow-xl border rounded-md h-full lg:w-[100%] md:[100%] w-[100%] box-border p-3':
-              isDarkMode,
-          }"
-          class="col-span-1 relative h-full block md:hidden"
-        >
-          <div
-            class="absolute top-1 right-1 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center"
+          <!-- Theme Toggle with Animation -->
+          <button 
+            @click="toggleTheme" 
+            class="relative p-3 rounded-xl transition-all duration-300 hover:scale-110 transform shadow-lg group overflow-hidden"
+            :class="isDarkMode ? 'bg-gradient-to-r from-yellow-400 to-orange-500' : 'bg-gradient-to-r from-indigo-500 to-purple-600'"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              class="w-4 h-4 text-gray-600"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 10h2v11H3V10zm6-4h2v15H9V6zm6 8h2v7h-2v-7zm6-5h2v12h-2V9z"
-              />
-            </svg>
-          </div>
-
-          <IncomeExpenses
-            :income="income"
-            :expenses="expenses"
-            :textColor="textColor"
-            class="flex flex-row items-center justify-center"
-          />
-        </layoutb>
-
-        <div
-          :class="{
-            'bg-white border-gray-200': !isDarkMode,
-            'bg-gray-700 border-gray-700': isDarkMode,
-          }"
-          class="p-4 shadow-xl border rounded-md h-[49vh] box-border lg:w-full w-[100%]"
-        >
-          <AddTransaction
-            @transactionSubmitted="handleTransactionSubmitted"
-            :textColor="textColor"
-          />
-        </div>
-
-        <div
-          :class="{
-            'bg-white border-gray-200': !isDarkMode,
-            'bg-gray-700 border-gray-700': isDarkMode,
-          }"
-          class="p-4 shadow-xl border rounded-md h-[43.5vh] box-border"
-        >
-          <LineChart
-            :transactions="sortedTransactions"
-            :textColor="textColor"
-          />
-        </div>
-
-        <div
-          :class="{
-            'bg-white border-gray-200': !isDarkMode,
-            'bg-gray-700 border-gray-700': isDarkMode,
-          }"
-          class="p-4 shadow-xl border rounded-md h-[43.5vh] box-border"
-        >
-          <LineChartBalance
-            :transactions="sortedTransactions"
-            :textColor="textColor"
-          />
-        </div>
-        <div
-          :class="{
-            'bg-white border-gray-200': !isDarkMode,
-            'bg-gray-700 border-gray-700': isDarkMode,
-          }"
-          class="p-4 shadow-xl border rounded-md text-base font-normal h-full box-border lg:hidden z-30"
-        >
-          <button
-            v-if="hasTransactions"
-            class="delete-all-btn"
-            @click="deleteAllTransactions"
-          >
-            <span class="icon">🗑️</span> Hapus Semua Transaksi
+            <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="relative z-10 transition-transform duration-300" :class="isDarkMode ? 'rotate-180' : 'rotate-0'">
+              <span v-if="isDarkMode" class="text-lg block"> ☀️ </span>
+              <span v-else class="text-lg block"> 🌙 </span>
+            </div>
           </button>
-          <TransactionList
-            :transactions="transactions"
-            @transactionDeleted="handleTransactionDeleted"
-            :textColor="textColor"
-          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+      <!-- Loading Overlay -->
+      <div v-if="isLoading" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl flex items-center gap-3">
+          <div class="w-6 h-6 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <span class="font-medium" :class="textColor">Processing...</span>
         </div>
       </div>
 
-      <layout2
-        :class="{
-          'bg-white': !isDarkMode,
-          'bg-gray-900': isDarkMode,
-        }"
-        class="grid grid-cols-1 gap-4 pl-4 h-[95vh] w-full box-border overflow-y-auto hidden md:block"
-      >
-        <div
-          :class="{
-            'bg-white border-gray-200': !isDarkMode,
-            'bg-gray-700 border-gray-700': isDarkMode,
-          }"
-          class="p-4 shadow-xl border rounded-md text-base font-normal h-full box-border"
-        >
-          <button
-            v-if="hasTransactions"
-            class="delete-all-btn"
-            @click="deleteAllTransactions"
-          >
-            <span class="icon">🗑️</span> Hapus Semua Transaksi
-          </button>
-          <TransactionList
-            :transactions="transactions"
-            @transactionDeleted="handleTransactionDeleted"
-            :textColor="textColor"
-          />
+      <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+        
+        <!-- Left Column: Stats Cards -->
+        <div class="xl:col-span-3 space-y-6">
+          <!-- Balance and Income/Expense Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Balance Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div class="relative backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-wallet text-white text-lg"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm font-medium" :class="textColor + ' opacity-70'">Total Balance</p>
+                    <p class="text-2xl font-bold" :class="total >= 0 ? 'text-green-500' : 'text-red-500'">
+                      {{ formatCurrency(total) }}
+                    </p>
+                  </div>
+                </div>
+                <Header :textColor="textColor" />
+              </div>
+            </div>
+
+            <!-- Income Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div class="relative backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-arrow-up text-white text-lg"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm font-medium" :class="textColor + ' opacity-70'">Income</p>
+                    <p class="text-xl font-bold text-green-500">
+                      {{ formatCurrency(income) }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expense Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div class="relative backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-arrow-down text-white text-lg"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm font-medium" :class="textColor + ' opacity-70'">Expenses</p>
+                    <p class="text-xl font-bold text-red-500">
+                      {{ formatCurrency(expenses) }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Transaction Card -->
+          <div class="relative group">
+            <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+            <div class="relative backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-xl">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl flex items-center justify-center">
+                  <i class="fas fa-plus text-white"></i>
+                </div>
+                <h3 class="text-lg font-semibold" :class="textColor">Add New Transaction</h3>
+              </div>
+              <AddTransaction @transactionSubmitted="handleTransactionSubmitted" :textColor="textColor" />
+            </div>
+          </div>
         </div>
-      </layout2>
-    </layout1>
+
+        <!-- Right Column: Transaction List & History -->
+        <div class="xl:col-span-1">
+          <div class="sticky top-24">
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div class="relative backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 rounded-2xl border border-white/20 dark:border-gray-700/50 shadow-xl max-h-[80vh] overflow-hidden">
+                
+                <!-- Tab Navigation -->
+                <div class="flex border-b border-gray-200/50 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-900/50">
+                  <button 
+                    @click="activeTab = 'transactions'"
+                    class="flex-1 px-4 py-3 font-medium transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    :class="activeTab === 'transactions' 
+                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/50 dark:bg-blue-900/20' 
+                      : (textColor + ' opacity-70')"
+                  >
+                    <i class="fas fa-list mr-2"></i>
+                    <span class="hidden sm:inline">Transaksi</span>
+                  </button>
+                  <button 
+                    @click="activeTab = 'monthly'"
+                    class="flex-1 px-4 py-3 font-medium transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    :class="activeTab === 'monthly' 
+                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/50 dark:bg-blue-900/20' 
+                      : (textColor + ' opacity-70')"
+                  >
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    <span class="hidden sm:inline">History</span>
+                  </button>
+                  <button 
+                    @click="activeTab = 'charts'"
+                    class="flex-1 px-4 py-3 font-medium transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    :class="activeTab === 'charts' 
+                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/50 dark:bg-blue-900/20' 
+                      : (textColor + ' opacity-70')"
+                  >
+                    <i class="fas fa-chart-line mr-2"></i>
+                    <span class="hidden sm:inline">Charts</span>
+                  </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="p-4 h-[70vh] overflow-y-auto custom-scrollbar">
+                  <!-- Transactions Tab -->
+                  <div v-if="activeTab === 'transactions'" class="space-y-4">
+                    <div class="flex justify-between items-center">
+                      <button 
+                        v-if="!showAll" 
+                        @click="viewAllTransactions" 
+                        class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 transform"
+                      >
+                        <i class="fas fa-eye mr-2"></i>
+                        View All
+                      </button>
+                      <button 
+                        v-if="hasTransactions" 
+                        @click="deleteAllTransactions"
+                        class="px-4 py-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 transform"
+                      >
+                        <i class="fas fa-trash mr-2"></i>
+                        Delete All
+                      </button>
+                    </div>
+
+                    <div v-if="showAll" class="space-y-3">
+                      <h4 class="font-semibold" :class="textColor">Daily Summary</h4>
+                      <div 
+                        v-for="day in transactionsByDay" 
+                        :key="day.date" 
+                        class="p-3 rounded-xl cursor-pointer transition-all duration-300 hover:scale-[1.02] transform hover:shadow-lg"
+                        :class="isDarkMode ? 'bg-gray-700/50 hover:bg-gray-600/50' : 'bg-gray-100/50 hover:bg-gray-200/50'"
+                        @click="viewTransactionsForDate(day.date)"
+                      >
+                        <div class="flex justify-between items-center">
+                          <span class="font-medium" :class="textColor">{{ formatDate(day.date) }}</span>
+                          <span class="font-bold" :class="day.total >= 0 ? 'text-green-500' : 'text-red-500'">
+                            {{ formatCurrency(day.total) }}
+                          </span>
+                        </div>
+                        <div class="flex justify-between text-sm mt-2">
+                          <span class="text-green-500">+{{ formatCurrency(day.income) }}</span>
+                          <span class="text-red-500">{{ formatCurrency(day.expenses) }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <TransactionList 
+                      :transactions="filteredTransactions" 
+                      @transactionDeleted="handleTransactionDeleted"
+                      :textColor="textColor" 
+                    />
+                  </div>
+
+                  <!-- Monthly History Tab -->
+                  <div v-if="activeTab === 'monthly'">
+                    <MonthlyHistory 
+                      :transactionsByMonth="transactionsByMonth"
+                      :transactionsByYear="transactionsByYear"
+                      :getTransactionsForMonth="getTransactionsForMonth"
+                      :exportMonthlyData="exportMonthlyData"
+                      :getMonthName="getMonthName"
+                      :textColor="textColor"
+                      :isDarkMode="isDarkMode"
+                    />
+                  </div>
+
+                  <!-- Charts Tab -->
+                  <div v-if="activeTab === 'charts'" class="space-y-6">
+                    <div class="p-4 rounded-xl backdrop-blur-sm" :class="isDarkMode ? 'bg-gray-800/50' : 'bg-gray-100/50'">
+                      <LineChart :transactions="sortedTransactions" :textColor="textColor" />
+                    </div>
+                    
+                    <div class="p-4 rounded-xl backdrop-blur-sm" :class="isDarkMode ? 'bg-gray-800/50' : 'bg-gray-100/50'">
+                      <LineChartBalance :transactions="sortedTransactions" :textColor="textColor" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -267,12 +276,11 @@ import { useToast } from "vue-toastification";
 
 // Import components
 import Header from "./Header.vue";
-import Balance from "./Balance.vue";
-import IncomeExpenses from "./IncomeExpenses.vue";
-import TransactionList from "./TransactionList.vue";
 import AddTransaction from "./AddTransaction.vue";
 import LineChart from "./LineChart.vue";
 import LineChartBalance from "./LineChartBalance.vue";
+import MonthlyHistory from "./MonthlyHistory.vue";
+import TransactionList from "./TransactionList.vue";
 
 // Import composable for transaction logic
 import { useTransactions } from "../composables/useTransactions";
@@ -280,35 +288,71 @@ import { useTransactions } from "../composables/useTransactions";
 const toast = useToast();
 const {
   transactions,
+  transactionsByDay,
+  transactionsByMonth,
+  transactionsByYear,
   total,
   income,
   expenses,
   addTransaction,
   deleteTransaction,
   deleteAllTransactions,
+  viewTransactionsForDate,
+  viewAllTransactions,
+  showAll,
+  selectedDate,
+  filteredTransactions,
+  getTransactionsForMonth,
+  exportMonthlyData,
+  getMonthName,
+  formatDateForDisplay,
+  formatCurrency
 } = useTransactions(toast);
 
 const hasTransactions = computed(() => transactions.value.length > 0);
 
 // Handlers for transactions
-const handleTransactionSubmitted = (transactionData) => {
-  addTransaction(transactionData);
+const handleTransactionSubmitted = async (transactionData) => {
+  isLoading.value = true;
+  try {
+    addTransaction(transactionData);
+    // Add small delay for smooth UX
+    await new Promise(resolve => setTimeout(resolve, 300));
+  } finally {
+    isLoading.value = false;
+  }
 };
 
-const handleTransactionDeleted = (id) => {
-  deleteTransaction(id);
+const handleTransactionDeleted = async (id) => {
+  isLoading.value = true;
+  try {
+    deleteTransaction(id);
+    await new Promise(resolve => setTimeout(resolve, 200));
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 // Computed property for sorted transactions
 const sortedTransactions = computed(() => {
-  return transactions.value; // Ensure that transactions have 'date' and 'amount'
+  return [...transactions.value].sort((a, b) => new Date(a.date) - new Date(b.date));
 });
 
 // Theme management
 const isDarkMode = ref(false);
+const isDayMode = computed(() => !isDarkMode.value);
+const activeTab = ref('transactions'); // 'transactions', 'monthly', 'charts'
+const isLoading = ref(false);
 
 const toggleTheme = () => {
   isDarkMode.value = !isDarkMode.value;
+};
+
+// Function to go to today's date
+const goToToday = () => {
+  const today = new Date().toISOString().split('T')[0];
+  selectedDate.value = today;
+  showAll.value = false;
 };
 
 // Computed class for main background color based on theme
@@ -320,6 +364,17 @@ const themeClass = computed(() =>
 const textColor = computed(() =>
   isDarkMode.value ? "text-white" : "text-black"
 );
+
+// Format date for display
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('id-ID', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+};
 
 // Auto-refresh functionality
 let refreshInterval;
@@ -340,16 +395,119 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.delete-all-btn {
-  background-color: #f87171;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
 }
 
-.delete-all-btn:hover {
-  background-color: #c62828;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Glassmorphism Effects */
+.glass-effect {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Smooth Animations */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Button Ripple Effect */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
+  transform: translate(-50%, -50%);
+}
+
+.btn-ripple:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Loading Animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Modern Focus States */
+.modern-focus:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+}
+
+/* Responsive Grid Improvements */
+@media (max-width: 768px) {
+  .mobile-full {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Dark mode specific adjustments */
+.dark .glass-effect {
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+.light .glass-effect {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 </style>
